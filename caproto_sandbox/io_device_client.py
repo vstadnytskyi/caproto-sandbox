@@ -10,10 +10,6 @@ from caproto.threading.client import Context
 from pdb import pm
 default_prefix='io_device:'
 
-ctx = Context()
-img_caproto, = ctx.get_pvs(default_prefix+'image')
-
-
 t1 = epics.PV(pvname = default_prefix+'t1' )
 dt1 = epics.PV(pvname = default_prefix+'dt1' )
 t2 = epics.PV(pvname = default_prefix+'t2' )
@@ -26,7 +22,8 @@ print(t2-t1, img.mean(), img.max(), img.min())
 img2 = img.reshape((3960,3960))
 print(t2-t1, img2.mean(), img2.max(), img2.min())
 
-
+ctx = Context()
+img_caproto, = ctx.get_pvs(default_prefix+'image')
 t1 = time()
 img_caproto_data = img_caproto.read().data.reshape((3960,3960))
 t2 = time()
