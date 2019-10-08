@@ -12,8 +12,8 @@ from caproto.server import pvproperty, PVGroup, ioc_arg_parser, run
 from numpy import zeros, random
 image_shape = (3960,3960)
 class Device(object):
-    dt1 = 1
-    dt2 = 1
+    dt1 = 0.9
+    dt2 = 0.9
 
     def start_io_interrupt_monitor(self,new_value_callback):
         '''
@@ -42,11 +42,11 @@ class Device(object):
         callbacks here.
         '''
         while True:
+            image = random.randint(0,256,image_shape).flatten()
             date_time = datetime.fromtimestamp(time())
             t = time()#date_time.strftime("%m/%d/%Y, %H:%M:%S.%f")
-            image = random.randint(0,256,image_shape).flatten()
             new_value_callback2({'t2':t,'image':image})
-            print('image in device:',image.mean(),image.max(),image.min())
+            #print('image in device:',image.mean(),image.max(),image.min())
             sleep(self.dt2)
 
 
@@ -107,7 +107,6 @@ class IOInterruptIOC(PVGroup):
                 await self.t2.write(value['t2'])
             if 'image' in list(value.keys()):
                 await self.image.write(value['image'])
-                print('image in ioc:',self.image.value.mean(),self.image.value.max(),self.image.value.min())
 
 device = Device()
 
