@@ -9,7 +9,8 @@ from time import time,sleep
 from datetime import datetime
 
 from caproto.server import pvproperty, PVGroup, ioc_arg_parser, run
-from numpy import zeros
+from numpy import zeros, random
+image_shape = (3960,3960)
 class Device(object):
     dt1 = 1
     dt2 = 1
@@ -43,7 +44,9 @@ class Device(object):
         while True:
             date_time = datetime.fromtimestamp(time())
             t = time()#date_time.strftime("%m/%d/%Y, %H:%M:%S.%f")
-            new_value_callback2({'t2':t})
+            image = random.randint(0,256,image_shape).flatten()
+            new_value_callback2({'t2':t,'image':image})
+            print('image in device:',image.mean(),image.max(),image.min())
             sleep(self.dt2)
 
 
@@ -52,7 +55,7 @@ class IOInterruptIOC(PVGroup):
     dt1 = pvproperty(value=0.9, dtype = float, precision = 3)
     t2 = pvproperty(value=2.0)
     dt2 = pvproperty(value=0.9, dtype = float, precision = 3)
-    arr = zeros((3,3960,3960))
+    arr = zeros(image_shape)
     f_arr = arr.flatten()
     image = pvproperty(value = f_arr, dtype = float)
 
@@ -66,7 +69,7 @@ class IOInterruptIOC(PVGroup):
     @t1.startup
     async def t1(self, instance, async_lib):
         # This method will be called when the server starts up.
-        print('* keypress method called at server startup')
+        print('* t1 method called at server startup')
         queue = async_lib.ThreadsafeQueue()
 
         # Start a separate thread that monitors keyboard input, telling it to
@@ -86,7 +89,7 @@ class IOInterruptIOC(PVGroup):
     @t2.startup
     async def t2(self, instance, async_lib):
         # This method will be called when the server starts up.
-        print('* keypress method called at server startup')
+        print('* t2 method called at server startup')
         queue = async_lib.ThreadsafeQueue()
 
         # Start a separate thread that monitors keyboard input, telling it to
@@ -102,6 +105,9 @@ class IOInterruptIOC(PVGroup):
             value = await queue.async_get()
             if 't2' in list(value.keys()):
                 await self.t2.write(value['t2'])
+            if 'image' in list(value.keys()):
+                await self.image.write(value['image'])
+                print('image in ioc:',self.image.value.mean(),self.image.value.max(),self.image.value.min())
 
 device = Device()
 
@@ -111,4 +117,5 @@ if __name__ == '__main__':
         desc='Run an IOC that updates via I/O interrupt on key-press events.')
 
     ioc = IOInterruptIOC(**ioc_options)
+    print(ioc.image)
     run(ioc.pvdb, **run_options)
