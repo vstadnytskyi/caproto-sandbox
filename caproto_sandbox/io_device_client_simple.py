@@ -11,7 +11,7 @@ from caproto.threading.client import Context
 from pdb import pm
 import epics
 from numpy import nan
-default_prefix='io_device:'
+default_prefix='camera:'
 ctx = Context()
 ca_img,ca_t1,ca_t2 = ctx.get_pvs(default_prefix+'image',default_prefix+'t1',default_prefix+'t2')
 

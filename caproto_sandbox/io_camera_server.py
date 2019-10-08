@@ -26,7 +26,6 @@ class Device(object):
         while True:
             image = random.randint(0,256,image_shape).flatten()
             new_value_callback({'image':image})
-            print('image in device:',image.mean(),image.max(),image.min())
             sleep(self.dt)
 
 
