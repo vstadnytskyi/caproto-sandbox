@@ -5,6 +5,10 @@ cache:
   directories:
     - $HOME/.cache/pip
     - $HOME/.ccache  # https://github.com/travis-ci/travis-ci/issues/5853
+env:
+  global:
+    # Doctr deploy key for vstadnytskyi/caproto-sandbox
+    - secure: "HByDmjLmL6wHFAMN9zG/ViJZCAYy9ODZLumt9U7k9+x+5+DQeK4e31pUh4eVRt8qjdIwZAZXBunEGQwbkQvZH28Pt1j/hv9XCZ4c4KWwhm5JlsA6TAgx/S20ZSD99bSe7GiitNli/3FQ42dGOYv4wrkFRkO8s0NVjZTPYgzKhb4lUzUCqagd5HGvj2nhVKjxYyrQY4yY9cLJE3VxhBL0u9ug0ccTS/5Kc7rQBEQ88Hyxojzf6WhlmP23H6/hdRaR0SNpoVi9emMRT2DdBBVV/9s3+rUUu44lqydB/FYIgGmpwh25ZzBeuB6ALYeZa0SXjqOLcVaZ8RBfBvwYYypXSSXCI8fYzbDOLCYE4TMVE5/mydJRoNLjGOf4C2a99m3E8Up3eFktKoHzSj1b8zJp1J/DLioIIYyDxemSDYkvgqeo5yccQhk65pbQVJbwBXSACRSfvZyV8Z14OGa7i/ncwLSYQFP67lN+p3bFi+1sK0OHoCWuW/sFH3USTw67Fn6AWQ7rsd2+lOBnmVoW1QnMqOtwFncSSmAZNEiXMKEb1JIY2IWh/LWwS31pZmW/Z96v7SNBQk8VzgUAdDzhO7htxN9Af66DkpsL8+fWe9DYrE7/tdxb90U58dJmlDc8do+vH7Ui9BDUWgFqqm2kQILxyxY1o5yVCsup+GfwR6vPE78="
 
 install:
   # Install this package and the packages listed in requirements.txt.
@@ -16,5 +20,8 @@ script:
   - coverage run -m pytest  # Run the tests and check for test coverage.
   - coverage report -m  # Generate test coverage report.
   - codecov  # Upload the report to codecov.
-  - flake8  # Enforce code style ('relaxed' line length limit is set in .flake8 config file).
+ # - flake8  # Enforce code style ('relaxed' line length limit is set in .flake8 config file).
+  - set -e  # If any of the following steps fail, just stop at that point.
   - make -C docs html  # Build the documentation.
+  - pip install doctr
+  - doctr deploy --built-docs docs/build/html .  # Publish the documentation.
