@@ -106,6 +106,7 @@ class IOInterruptIOC(PVGroup):
             if 't2' in list(value.keys()):
                 await self.t2.write(value['t2'])
             if 'image' in list(value.keys()):
+                print(value['image'].max(),value['image'].mean())
                 await self.image.write(value['image'])
 
 device = Device()
