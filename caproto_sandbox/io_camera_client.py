@@ -15,7 +15,7 @@ image = epics.PV(pvname = default_prefix+'image', connection_timeout = 20)
 t1 = time()
 def image_get():
     """
-    I have created this fucntion to simplify the call from timeit. 
+    I have created this fucntion to simplify the call from timeit. It doesn't change the fact that pyepics is slower than caproto
     """
     global image
     return image.get(timeout = 20)
