@@ -14,9 +14,12 @@ print('epics Client')
 image = epics.PV(pvname = default_prefix+'image', connection_timeout = 20)
 t1 = time()
 def image_get():
+    """
+    I have created this fucntion to simplify the call from timeit. 
+    """
     global image
     return image.get(timeout = 20)
-img = image_get()
+img = image.get(timeout = 20)
 t2 = time()
 print(t2-t1, img.mean(), img.max(), img.min())
 img2 = img.reshape((3960,3960))
@@ -31,7 +34,7 @@ print(t2-t1, img_caproto_data.data.reshape((3960,3960)).mean(), img_caproto_data
 
 
 from timeit import timeit
-t = timeit(img_caproto.read, number = 10)
-print('caproto client: {}'.format(t/10))
 t = timeit(image_get, number = 10)
 print('pyepics client: {}'.format(t/10))
+t = timeit(img_caproto.read, number = 10)
+print('caproto client: {}'.format(t/10))
