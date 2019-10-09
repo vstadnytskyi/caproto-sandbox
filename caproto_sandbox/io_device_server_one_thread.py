@@ -12,7 +12,7 @@ from caproto.server import pvproperty, PVGroup, ioc_arg_parser, run
 from numpy import zeros, random
 image_shape = (3960,3960)
 class Device(object):
-    dt = 1.0
+    dt = 4.0
 
     def start_io_interrupt_monitor(self,new_value_callback):
         '''
@@ -27,10 +27,14 @@ class Device(object):
         while True:
             date_time = datetime.fromtimestamp(time())
             t = time()#date_time.strftime("%m/%d/%Y, %H:%M:%S.%f")
+            new_value_callback({'t1':t})
             image = random.randint(0,256,image_shape).flatten()
+            sleep(self.dt)
+            new_value_callback({'image':image})
+            sleep(self.dt)
             date_time = datetime.fromtimestamp(time())
             t = time()#date_time.strftime("%m/%d/%Y, %H:%M:%S.%f")
-            new_value_callback({'t2':t,'image':image,'t1':t})
+            new_value_callback({'t2':t})
             #print('image in device:',image.mean(),image.max(),image.min())
             sleep(self.dt)
 
@@ -61,7 +65,7 @@ class IOInterruptIOC(PVGroup):
         thread = threading.Thread(target=device.start_io_interrupt_monitor,
                                   daemon=True,
                                   kwargs=dict(new_value_callback=queue.put))
-        device.dt = 0.99
+        device.dt = 2.0
         thread.start()
 
         # Loop and grab items from the queue one at a time
@@ -73,6 +77,7 @@ class IOInterruptIOC(PVGroup):
                 await self.image.write(value['image'])
             if 't2' in list(value.keys()):
                 await self.t2.write(value['t2'])
+            print(list(value.keys()),time())
 
 
 device = Device()
