@@ -10,7 +10,7 @@ from datetime import datetime
 
 from caproto.server import pvproperty, PVGroup, ioc_arg_parser, run
 from numpy import zeros, random
-image_shape = (3960,3960)
+image_shape = (3960,396*7)
 class Device(object):
     dt = 4.0
 
@@ -25,18 +25,15 @@ class Device(object):
         callbacks here.
         '''
         while True:
-            date_time = datetime.fromtimestamp(time())
+            image = random.randint(0,256,image_shape).flatten()
+            new_value_callback({'image':image})
             t = time()#date_time.strftime("%m/%d/%Y, %H:%M:%S.%f")
             new_value_callback({'t1':t})
-            image = random.randint(0,256,image_shape).flatten()
-            sleep(self.dt)
-            new_value_callback({'image':image})
-            sleep(self.dt)
-            date_time = datetime.fromtimestamp(time())
             t = time()#date_time.strftime("%m/%d/%Y, %H:%M:%S.%f")
             new_value_callback({'t2':t})
-            #print('image in device:',image.mean(),image.max(),image.min())
             sleep(self.dt)
+
+
 
 
 class IOInterruptIOC(PVGroup):
@@ -77,7 +74,7 @@ class IOInterruptIOC(PVGroup):
                 await self.image.write(value['image'])
             if 't2' in list(value.keys()):
                 await self.t2.write(value['t2'])
-            print(list(value.keys()),time())
+            #print(list(value.keys()),time())
 
 
 device = Device()

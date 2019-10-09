@@ -11,9 +11,26 @@ from datetime import datetime
 from caproto.server import pvproperty, PVGroup, ioc_arg_parser, run
 from numpy import zeros, random
 image_shape = (3960,3960)
+
 class Device(object):
-    dt1 = 0.9
-    dt2 = 0.9
+
+    def init(self):
+        raise NotImplementedError
+
+    def close(self):
+        raise NotImplementedError
+
+    def run_once(self):
+        raise NotImplementedError
+
+    def run(self):
+        raise NotImplementedError
+
+    def start(self):
+        raise NotImplementedError
+
+    def stop(self):
+        raise NotImplementedError
 
     def start_io_interrupt_monitor(self,new_value_callback):
         '''
@@ -30,24 +47,6 @@ class Device(object):
             t = time()#date_time.strftime("%m/%d/%Y, %H:%M:%S.%f")
             new_value_callback({'t1':t})
             sleep(self.dt1)
-
-    def start_io_interrupt_monitor2(self,new_value_callback2):
-        '''
-        This function monitors the terminal it was run in for keystrokes.
-        On each keystroke, it calls new_value_callback with the given keystroke.
-
-        This is used to simulate the concept of an I/O Interrupt-style signal from
-        the EPICS world. Those signals depend on hardware to tell EPICS when new
-        values are available to be read by way of interrupts - whereas we use
-        callbacks here.
-        '''
-        while True:
-            image = random.randint(0,256,image_shape).flatten()
-            date_time = datetime.fromtimestamp(time())
-            t = time()#date_time.strftime("%m/%d/%Y, %H:%M:%S.%f")
-            new_value_callback2({'t2':t,'image':image})
-            #print('image in device:',image.mean(),image.max(),image.min())
-            sleep(self.dt2)
 
 
 class IOInterruptIOC(PVGroup):
