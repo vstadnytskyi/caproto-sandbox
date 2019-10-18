@@ -1,54 +1,26 @@
 #!/usr/bin/env python3
-import termios
-import fcntl
-import sys
-import os
-import threading
-import atexit
-from time import time,sleep
-from datetime import datetime
 import itertools
-
+import threading
+import time
 
 from caproto.server import pvproperty, PVGroup, ioc_arg_parser, run
-from numpy import zeros, random
-image_shape = (3960,3960)
 
-class Device(object):
 
-    def init(self):
-        raise NotImplementedError
+def worker(request_queue, response_queue):
+    i = itertools.count(1)
+    while True:
+        request = request_queue.get()
 
-    def close(self):
-        raise NotImplementedError
+        # In this toy example, the "request" is some number of seconds to
+        # sleep for, but it could be any blocking task.
+        print(f'Sleeping for {request} seconds...')
+        time.sleep(request)
 
-    def run_once(self):
-        raise NotImplementedError
-
-    def run(self):
-        raise NotImplementedError
-
-    def start(self):
-        raise NotImplementedError
-
-    def stop(self):
-        raise NotImplementedError
-
-    def worker(self,request_queue, response_queue):
-        i = itertools.count(1)
-        while True:
-            request = request_queue.get()
-
-            # In this toy example, the "request" is some number of seconds to
-            # sleep for, but it could be any blocking task.
-            print(f'Sleeping for {request} seconds...')
-            time.sleep(request)
-
-            # In this toy example, the "response" is just a counter of how many
-            # requests we have seen, but it could be anything.
-            counter_value = next(i)
-            response_queue.put(counter_value)
-            print('Done')
+        # In this toy example, the "response" is just a counter of how many
+        # requests we have seen, but it could be anything.
+        counter_value = next(i)
+        response_queue.put(counter_value)
+        print('Done')
 
 
 class WorkerThreadIOC(PVGroup):
@@ -64,7 +36,7 @@ class WorkerThreadIOC(PVGroup):
         self.response_queue = async_lib.ThreadsafeQueue()
 
         # Start a separate thread that consumes requests and sends responses.
-        thread = threading.Thread(target=device.worker,
+        thread = threading.Thread(target=worker,
                                   daemon=True,
                                   kwargs=dict(request_queue=self.request_queue,
                                               response_queue=self.response_queue))
@@ -85,7 +57,6 @@ class WorkerThreadIOC(PVGroup):
         await self.request_queue.async_put(value)
         return value
 
-device = Device()
 
 if __name__ == '__main__':
     ioc_options, run_options = ioc_arg_parser(

@@ -14,7 +14,7 @@ image_shape = (3960,396*7)
 class Device(object):
     dt = 4.0
 
-    def start_io_interrupt_monitor(self,new_value_callback):
+    def start_io_interrupt_monitor(self):
         '''
         This function monitors the terminal it was run in for keystrokes.
         On each keystroke, it calls new_value_callback with the given keystroke.
@@ -26,11 +26,11 @@ class Device(object):
         '''
         while True:
             image = random.randint(0,256,image_shape).flatten()
-            new_value_callback({'image':image})
+            ioc.queue.put({'image':image})
             t = time()#date_time.strftime("%m/%d/%Y, %H:%M:%S.%f")
-            new_value_callback({'t1':t})
+            ioc.queue.put({'t1':t})
             t = time()#date_time.strftime("%m/%d/%Y, %H:%M:%S.%f")
-            new_value_callback({'t2':t})
+            ioc.queue.put({'t2':t})
             sleep(self.dt)
 
 
@@ -55,26 +55,25 @@ class IOInterruptIOC(PVGroup):
     async def t1(self, instance, async_lib):
         # This method will be called when the server starts up.
         print('* t1 method called at server startup')
-        queue = async_lib.ThreadsafeQueue()
+        self.queue = async_lib.ThreadsafeQueue()
 
         # Start a separate thread that monitors keyboard input, telling it to
         # put new values into our async-friendly queue
         thread = threading.Thread(target=device.start_io_interrupt_monitor,
-                                  daemon=True,
-                                  kwargs=dict(new_value_callback=queue.put))
+                                  daemon=True)#,
+                                  #kwargs=dict(new_value_callback=self.queue.pu#t))
         device.dt = 2.0
         thread.start()
 
         # Loop and grab items from the queue one at a time
         while True:
-            value = await queue.async_get()
+            value = await self.queue.async_get()
             if 't1' in list(value.keys()):
                 await self.t1.write(value['t1'])
             if 'image' in list(value.keys()):
                 await self.image.write(value['image'])
             if 't2' in list(value.keys()):
                 await self.t2.write(value['t2'])
-            #print(list(value.keys()),time())
 
 
 device = Device()
