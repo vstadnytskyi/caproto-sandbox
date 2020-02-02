@@ -11,5 +11,6 @@ caproto sandbox Documentation
 
    installation
    usage
+   example_1
    release-history
    min_versions

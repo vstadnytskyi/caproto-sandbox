@@ -18,7 +18,7 @@ class SimpleIOC(PVGroup):
     from pickle import dumps
     str_in = pvproperty(value='', dtype = str, max_length = 1000)
     str_in2 = pvproperty(value='', dtype = str, max_length = 1000)
-    str_out = pvproperty(value='', dtype = str, read_only = True)
+    str_out = pvproperty(value='', dtype = str, read_only = True, max_length = 1000)
     N_chr = pvproperty(value=3, read_only = True)
 
 
