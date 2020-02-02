@@ -99,7 +99,7 @@ class ServerIO(PVGroup):
     running = pvproperty(value=1)
     pressure_downstream = pvproperty(value=nan, units = 'atm', read_only = True)
     pressure_upstream = pvproperty(value=nan, units = 'atm', read_only = True)
-    pressure_barometric = pvproperty(value=nan, units = '100kPa' read_only = True)
+    pressure_barometric = pvproperty(value=nan, units = '100kPa', read_only = True)
     temperature = pvproperty(value=nan, units = 'C', read_only = True)
     update_time = pvproperty(value=1.0, units = 'seconds')
     CB = pvproperty(value = [nan]*100, read_only = True)
