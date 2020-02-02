@@ -70,7 +70,7 @@ class Device(object):
     	>>> device.ioput(pv_dict = {'running':True})
 
         """
-        if self.io not None:
+        if self.io is not None:
             self.io.io_put_queue.put(pv_dict)
         else:
             print('no IO is linked to the device')
