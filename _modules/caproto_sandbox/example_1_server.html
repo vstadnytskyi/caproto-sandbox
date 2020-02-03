@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>caproto_sandbox.example_1_server &mdash; caproto sandbox 0.0.0.post25+gde3ba6e documentation</title>
+  <title>caproto_sandbox.example_1_server &mdash; caproto sandbox 0.0.0.post26+ge973587 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.0.0.post25+gde3ba6e
+                0.0.0.post26+ge973587
               </div>
             
           
@@ -190,7 +190,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">retract_pos</span> <span class="o">=</span> <span class="mf">5.0</span>
 
 
-    <span class="k">def</span> <span class="nf">callback_monitor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">sub</span><span class="p">,</span> <span class="n">response</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Choices.callback_monitor"><a class="viewcode-back" href="../../example_1.html#caproto_sandbox.example_1_server.Choices.callback_monitor">[docs]</a>    <span class="k">def</span> <span class="nf">callback_monitor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">sub</span><span class="p">,</span> <span class="n">response</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        monitor callback functnio will be executed when a PV is written into.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;callback_monitor: Received response from&#39;</span><span class="p">,</span> <span class="n">sub</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">sub</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">insert_pos</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.002</span><span class="p">:</span>
             <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
@@ -204,9 +207,9 @@
             <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="nb">dict</span><span class="p">[</span><span class="s1">&#39;pv&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;choices&#39;</span>
             <span class="nb">dict</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span>
-        <span class="n">io</span><span class="o">.</span><span class="n">put_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
+        <span class="n">io</span><span class="o">.</span><span class="n">put_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">get_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Choices.get_state"><a class="viewcode-back" href="../../example_1.html#caproto_sandbox.example_1_server.Choices.get_state">[docs]</a>    <span class="k">def</span> <span class="nf">get_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">curr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">monitor</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;get_state </span><span class="si">{curr}</span><span class="s1"> and insert </span><span class="si">{self.insert_pos}</span><span class="s1"> and retract </span><span class="si">{self.retract_pos}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;{abs(curr - self.insert_pos) &lt; 0.002}&#39;</span><span class="p">)</span>
@@ -217,15 +220,15 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">reply</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;get_state </span><span class="si">{reply}</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;pv&#39;</span><span class="p">:</span><span class="s1">&#39;choices&#39;</span><span class="p">,</span><span class="s1">&#39;value&#39;</span><span class="p">:</span><span class="n">reply</span><span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;pv&#39;</span><span class="p">:</span><span class="s1">&#39;choices&#39;</span><span class="p">,</span><span class="s1">&#39;value&#39;</span><span class="p">:</span><span class="n">reply</span><span class="p">}</span></div>
 
-    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">monitor</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">insert_pos</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">retract</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">monitor</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">retract_pos</span><span class="p">)</span>
+<div class="viewcode-block" id="Choices.insert"><a class="viewcode-back" href="../../example_1.html#caproto_sandbox.example_1_server.Choices.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">monitor</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">insert_pos</span><span class="p">)</span></div>
+<div class="viewcode-block" id="Choices.retract"><a class="viewcode-back" href="../../example_1.html#caproto_sandbox.example_1_server.Choices.retract">[docs]</a>    <span class="k">def</span> <span class="nf">retract</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">monitor</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">retract_pos</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">insert_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="k">pass</span></div>
+<div class="viewcode-block" id="Choices.insert_filter"><a class="viewcode-back" href="../../example_1.html#caproto_sandbox.example_1_server.Choices.insert_filter">[docs]</a>    <span class="k">def</span> <span class="nf">insert_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">pass</span></div></div>
 
 <div class="viewcode-block" id="Motors"><a class="viewcode-back" href="../../example_1.html#caproto_sandbox.example_1_server.Motors">[docs]</a><span class="k">class</span> <span class="nc">Motors</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Motor client object. Connects to selected PVs&quot;&quot;&quot;</span>
@@ -249,12 +252,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">token</span><span class="p">[</span><span class="s1">&#39;val_monitor&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sub</span><span class="p">[</span><span class="s1">&#39;val_monitor&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">add_callback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">val_monitor_callback</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">rbv_monitor_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">sub</span><span class="p">,</span> <span class="n">response</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;rbv_monitor_callback: Received response from&#39;</span><span class="p">,</span> <span class="n">sub</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="k">def</span> <span class="nf">val_monitor_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">sub</span><span class="p">,</span> <span class="n">response</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;val_monitor_callback: Received response from&#39;</span><span class="p">,</span> <span class="n">sub</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<div class="viewcode-block" id="Motors.rbv_monitor_callback"><a class="viewcode-back" href="../../example_1.html#caproto_sandbox.example_1_server.Motors.rbv_monitor_callback">[docs]</a>    <span class="k">def</span> <span class="nf">rbv_monitor_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">sub</span><span class="p">,</span> <span class="n">response</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;rbv_monitor_callback: Received response from&#39;</span><span class="p">,</span> <span class="n">sub</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+<div class="viewcode-block" id="Motors.val_monitor_callback"><a class="viewcode-back" href="../../example_1.html#caproto_sandbox.example_1_server.Motors.val_monitor_callback">[docs]</a>    <span class="k">def</span> <span class="nf">val_monitor_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">sub</span><span class="p">,</span> <span class="n">response</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;val_monitor_callback: Received response from&#39;</span><span class="p">,</span> <span class="n">sub</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
 
-    <span class="k">def</span> <span class="nf">jog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">):</span>
+<div class="viewcode-block" id="Motors.jog"><a class="viewcode-back" href="../../example_1.html#caproto_sandbox.example_1_server.Motors.jog">[docs]</a>    <span class="k">def</span> <span class="nf">jog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">):</span>
         <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Server to Motor: move positive&#39;</span><span class="p">)</span>
         <span class="n">curr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_monitor</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -264,19 +267,19 @@
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Server to Motor: move negative&#39;</span><span class="p">)</span>
         <span class="n">curr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_monitor</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">new</span> <span class="o">=</span> <span class="n">curr</span> <span class="o">-</span> <span class="n">value</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">val_monitor</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">new</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val_monitor</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">new</span><span class="p">))</span></div>
 
-    <span class="k">def</span> <span class="nf">tweak_pos_up</span><span class="p">(</span><span class="bp">self</span><span class="p">,):</span>
+<div class="viewcode-block" id="Motors.tweak_pos_up"><a class="viewcode-back" href="../../example_1.html#caproto_sandbox.example_1_server.Motors.tweak_pos_up">[docs]</a>    <span class="k">def</span> <span class="nf">tweak_pos_up</span><span class="p">(</span><span class="bp">self</span><span class="p">,):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Motor: tweak_pos_up&#39;</span><span class="p">)</span>
         <span class="n">curr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_monitor</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">new</span> <span class="o">=</span> <span class="n">curr</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">tweak_pos_value</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">val_monitor</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">new</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val_monitor</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">new</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">tweak_pos_down</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Motors.tweak_pos_down"><a class="viewcode-back" href="../../example_1.html#caproto_sandbox.example_1_server.Motors.tweak_pos_down">[docs]</a>    <span class="k">def</span> <span class="nf">tweak_pos_down</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Motor: tweak_pos_down&#39;</span><span class="p">)</span>
         <span class="n">curr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_val_monitor</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">new</span> <span class="o">=</span> <span class="n">curr</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">tweak_pos_value</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">y_val_monitor</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">new</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y_val_monitor</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">new</span><span class="p">)</span></div></div>
 
 <div class="viewcode-block" id="Server"><a class="viewcode-back" href="../../example_1.html#caproto_sandbox.example_1_server.Server">[docs]</a><span class="k">class</span> <span class="nc">Server</span><span class="p">(</span><span class="n">PVGroup</span><span class="p">):</span>
     <span class="n">io_put_queue</span> <span class="o">=</span> <span class="kc">None</span>

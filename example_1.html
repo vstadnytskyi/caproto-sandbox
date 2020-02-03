@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Example 1 &mdash; caproto sandbox 0.0.0.post25+gde3ba6e documentation</title>
+  <title>Example 1 &mdash; caproto sandbox 0.0.0.post26+ge973587 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.0.0.post25+gde3ba6e
+                0.0.0.post26+ge973587
               </div>
             
           
@@ -171,6 +171,34 @@
 <li><p>GUI</p></li>
 <li><p>Client</p></li>
 </ol>
+<p>Two codes need to be running in to different shellsterminals. make sure to change directory to the directory with example_1 codes.</p>
+<p>Two start a mock motors</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>run example_1_motor.py
+</pre></div>
+</div>
+<p>You should see something similar to the following 5 lines:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="o">[[</span>User user$ ipython3 caproto_sandbox/example_1_motor.py
+<span class="o">[</span>I <span class="m">00</span>:54:27.859          server:  <span class="m">162</span><span class="o">]</span> Asyncio server starting up...
+<span class="o">[</span>I <span class="m">00</span>:54:27.860          server:  <span class="m">175</span><span class="o">]</span> Listening on <span class="m">0</span>.0.0.0:63591
+<span class="o">[</span>I <span class="m">00</span>:54:27.861          server:  <span class="m">261</span><span class="o">]</span> Server startup complete.
+* request method called at server startup @start.startup
+</pre></div>
+</div>
+<p>The mock motor is running now. Next step, start the server.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>run example_1_server.py
+</pre></div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="o">[</span>I <span class="m">00</span>:57:13.714          server:  <span class="m">162</span><span class="o">]</span> Asyncio server starting up...
+<span class="o">[</span>I <span class="m">00</span>:57:13.715          server:  <span class="m">175</span><span class="o">]</span> Listening on <span class="m">0</span>.0.0.0:50377
+<span class="o">[</span>I <span class="m">00</span>:57:13.716          server:  <span class="m">261</span><span class="o">]</span> Server startup complete.
+</pre></div>
+</div>
+<p>To start Grahical user interface run the following command:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>run example_1_server.py
+</pre></div>
+</div>
+<p>You will get a panel that looks like this;</p>
+<a class="reference internal image-reference" href="_images/example_1_gui.png"><img alt="_images/example_1_gui.png" src="_images/example_1_gui.png" style="width: 300px;" /></a>
 <div class="section" id="mock-motor-record">
 <h2>Mock motor record<a class="headerlink" href="#mock-motor-record" title="Permalink to this headline">¶</a></h2>
 <p>Simple mock motor record with three PVs: VAL, RBV and running.</p>
@@ -183,15 +211,42 @@
 <div class="section" id="server">
 <h2>Server<a class="headerlink" href="#server" title="Permalink to this headline">¶</a></h2>
 <p>There are three python classes in the file. The “Server” is a caproto PVGroup class and Choices, Motors are client classes that provide simple interface.</p>
-<dl class="class">
-<dt id="caproto_sandbox.example_1_server.Server">
-<em class="property">class </em><code class="sig-prename descclassname">caproto_sandbox.example_1_server.</code><code class="sig-name descname">Server</code><span class="sig-paren">(</span><em class="sig-param">prefix</em>, <em class="sig-param">*</em>, <em class="sig-param">macros=None</em>, <em class="sig-param">parent=None</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/caproto_sandbox/example_1_server.html#Server"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#caproto_sandbox.example_1_server.Server" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="class">
+<span class="target" id="module-caproto_sandbox.example_1_server"></span><dl class="class">
 <dt id="caproto_sandbox.example_1_server.Choices">
 <em class="property">class </em><code class="sig-prename descclassname">caproto_sandbox.example_1_server.</code><code class="sig-name descname">Choices</code><a class="reference internal" href="_modules/caproto_sandbox/example_1_server.html#Choices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#caproto_sandbox.example_1_server.Choices" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="caproto_sandbox.example_1_server.Choices.callback_monitor">
+<code class="sig-name descname">callback_monitor</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">sub</em>, <em class="sig-param">response=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/caproto_sandbox/example_1_server.html#Choices.callback_monitor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#caproto_sandbox.example_1_server.Choices.callback_monitor" title="Permalink to this definition">¶</a></dt>
+<dd><p>monitor callback functnio will be executed when a PV is written into.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="caproto_sandbox.example_1_server.Choices.db">
+<code class="sig-name descname">db</code><em class="property"> = &lt;ubcs_auxiliary.saved_property.DataBase object&gt;</em><a class="headerlink" href="#caproto_sandbox.example_1_server.Choices.db" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="caproto_sandbox.example_1_server.Choices.get_state">
+<code class="sig-name descname">get_state</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/caproto_sandbox/example_1_server.html#Choices.get_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#caproto_sandbox.example_1_server.Choices.get_state" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="caproto_sandbox.example_1_server.Choices.insert">
+<code class="sig-name descname">insert</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/caproto_sandbox/example_1_server.html#Choices.insert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#caproto_sandbox.example_1_server.Choices.insert" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="caproto_sandbox.example_1_server.Choices.insert_filter">
+<code class="sig-name descname">insert_filter</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/caproto_sandbox/example_1_server.html#Choices.insert_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#caproto_sandbox.example_1_server.Choices.insert_filter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="caproto_sandbox.example_1_server.Choices.retract">
+<code class="sig-name descname">retract</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/caproto_sandbox/example_1_server.html#Choices.retract"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#caproto_sandbox.example_1_server.Choices.retract" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="caproto_sandbox.example_1_server.Choices.saved_positions">
 <em class="property">property </em><code class="sig-name descname">saved_positions</code><a class="headerlink" href="#caproto_sandbox.example_1_server.Choices.saved_positions" title="Permalink to this definition">¶</a></dt>
 <dd><p>getter for SavedProperty. returns saved value if it exists in the database, otherwise returns default_value</p>
@@ -241,12 +296,36 @@
 
 </dd></dl>
 
-<p>The Motors class has two PVs hard-coded: BEAMLINE:motor.RBV and BEAMLINE:motor.VAL. it subscribes to PVs and act if new values is posted. The
-arrival of new value calls a callback function.</p>
 <dl class="class">
 <dt id="caproto_sandbox.example_1_server.Motors">
 <em class="property">class </em><code class="sig-prename descclassname">caproto_sandbox.example_1_server.</code><code class="sig-name descname">Motors</code><a class="reference internal" href="_modules/caproto_sandbox/example_1_server.html#Motors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#caproto_sandbox.example_1_server.Motors" title="Permalink to this definition">¶</a></dt>
-<dd><p>Motor client object. Connects to selected PVs</p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Motor client object. Connects to selected PVs</p>
+<dl class="attribute">
+<dt id="caproto_sandbox.example_1_server.Motors.db">
+<code class="sig-name descname">db</code><em class="property"> = &lt;ubcs_auxiliary.saved_property.DataBase object&gt;</em><a class="headerlink" href="#caproto_sandbox.example_1_server.Motors.db" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="caproto_sandbox.example_1_server.Motors.jog">
+<code class="sig-name descname">jog</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">value=0.5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/caproto_sandbox/example_1_server.html#Motors.jog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#caproto_sandbox.example_1_server.Motors.jog" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="caproto_sandbox.example_1_server.Motors.rbv_monitor_callback">
+<code class="sig-name descname">rbv_monitor_callback</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">sub</em>, <em class="sig-param">response=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/caproto_sandbox/example_1_server.html#Motors.rbv_monitor_callback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#caproto_sandbox.example_1_server.Motors.rbv_monitor_callback" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="caproto_sandbox.example_1_server.Motors.tweak_pos_down">
+<code class="sig-name descname">tweak_pos_down</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/caproto_sandbox/example_1_server.html#Motors.tweak_pos_down"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#caproto_sandbox.example_1_server.Motors.tweak_pos_down" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="caproto_sandbox.example_1_server.Motors.tweak_pos_up">
+<code class="sig-name descname">tweak_pos_up</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/caproto_sandbox/example_1_server.html#Motors.tweak_pos_up"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#caproto_sandbox.example_1_server.Motors.tweak_pos_up" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="caproto_sandbox.example_1_server.Motors.tweak_pos_value">
 <em class="property">property </em><code class="sig-name descname">tweak_pos_value</code><a class="headerlink" href="#caproto_sandbox.example_1_server.Motors.tweak_pos_value" title="Permalink to this definition">¶</a></dt>
@@ -271,8 +350,46 @@ arrival of new value calls a callback function.</p>
 </div>
 </dd></dl>
 
+<dl class="method">
+<dt id="caproto_sandbox.example_1_server.Motors.val_monitor_callback">
+<code class="sig-name descname">val_monitor_callback</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">sub</em>, <em class="sig-param">response=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/caproto_sandbox/example_1_server.html#Motors.val_monitor_callback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#caproto_sandbox.example_1_server.Motors.val_monitor_callback" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
+<dl class="class">
+<dt id="caproto_sandbox.example_1_server.Server">
+<em class="property">class </em><code class="sig-prename descclassname">caproto_sandbox.example_1_server.</code><code class="sig-name descname">Server</code><span class="sig-paren">(</span><em class="sig-param">prefix</em>, <em class="sig-param">*</em>, <em class="sig-param">macros=None</em>, <em class="sig-param">parent=None</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/caproto_sandbox/example_1_server.html#Server"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#caproto_sandbox.example_1_server.Server" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">caproto.server.server.PVGroup</span></code></p>
+<dl class="attribute">
+<dt id="caproto_sandbox.example_1_server.Server.choices">
+<code class="sig-name descname">choices</code><em class="property"> = PVSpec(get=None, put=&lt;function Server.choices&gt;, startup=&lt;function Server.choices&gt;, shutdown=None, attr='choices', name='choices', dtype=&lt;ChannelType.ENUM: 3&gt;, value=' ', max_length=None, alarm_group=None, read_only=None, doc=None, fields=(), cls_kwargs={'enum_strings': ['Insert', 'Retract', ' ']})</em><a class="headerlink" href="#caproto_sandbox.example_1_server.Server.choices" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="caproto_sandbox.example_1_server.Server.enum_strings">
+<code class="sig-name descname">enum_strings</code><em class="property"> = ['Insert', 'Retract', ' ']</em><a class="headerlink" href="#caproto_sandbox.example_1_server.Server.enum_strings" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="caproto_sandbox.example_1_server.Server.io_put_queue">
+<code class="sig-name descname">io_put_queue</code><em class="property"> = None</em><a class="headerlink" href="#caproto_sandbox.example_1_server.Server.io_put_queue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="caproto_sandbox.example_1_server.Server.jog">
+<code class="sig-name descname">jog</code><em class="property"> = PVSpec(get=&lt;function Server.jog&gt;, put=&lt;function Server.jog&gt;, startup=None, shutdown=None, attr='jog', name='jog', dtype=&lt;class 'float'&gt;, value=0.0, max_length=None, alarm_group=None, read_only=None, doc=None, fields=(), cls_kwargs={})</em><a class="headerlink" href="#caproto_sandbox.example_1_server.Server.jog" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="caproto_sandbox.example_1_server.Server.running">
+<code class="sig-name descname">running</code><em class="property"> = PVSpec(get=None, put=None, startup=&lt;function Server.running&gt;, shutdown=None, attr='running', name='running', dtype=&lt;class 'int'&gt;, value=1, max_length=None, alarm_group=None, read_only=None, doc=None, fields=(), cls_kwargs={})</em><a class="headerlink" href="#caproto_sandbox.example_1_server.Server.running" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p>The Motors class has two PVs hard-coded: BEAMLINE:motor.RBV and BEAMLINE:motor.VAL. it subscribes to PVs and act if new values is posted. The
+arrival of new value calls a callback function.</p>
 </div>
 </div>
 

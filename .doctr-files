@@ -1,6 +1,9 @@
+./_images/example_1_gui.png
+./_modules/caproto/server/server.html
 ./_modules/caproto_sandbox/example_1_motor.html
 ./_modules/caproto_sandbox/example_1_server.html
 ./_modules/index.html
+./_modules/ubcs_auxiliary/saved_property.html
 ./_sources/example_1.rst.txt
 ./_sources/index.rst.txt
 ./_sources/installation.rst.txt
@@ -70,6 +73,7 @@
 ./installation.html
 ./min_versions.html
 ./objects.inv
+./py-modindex.html
 ./release-history.html
 ./search.html
 ./searchindex.js
