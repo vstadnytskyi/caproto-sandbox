@@ -26,6 +26,12 @@ class Server(PVGroup):
 
     @running.startup
     async def running(self, instance, async_lib):
+        """
+        the running function will be executed on creation and startup of the running PV.
+
+        first, it creates two asynchronous threadsafe queues: put_queue and get_queue.
+        Second it start "while True" loop which checks if there are any entries in the put_queue. This is a pathway to communicate between outside objects.
+        """
         print('* request method called at server startup @start.startup')
         self.put_queue = async_lib.ThreadsafeQueue()
         self.get_queue = async_lib.ThreadsafeQueue()
@@ -42,6 +48,9 @@ class Server(PVGroup):
 
     @RBV.getter
     async def RBV(self, instance):
+        """
+        this function is called when the RBV is read by a client
+        """
         print('RBV getter:',self.RBV.value)
 
     @RBV.putter

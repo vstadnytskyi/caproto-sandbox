@@ -18,14 +18,11 @@ from ubcs_auxiliary.saved_property import DataBase, SavedProperty
 
 class Choices():
 
-    db = DataBase(root = os.getcwd(), name = 'Attenuators')
+    db = DataBase(root = os.getcwd(), name = 'Choices')
     saved_positions = SavedProperty(db,'saved_positions',{}).init()
     tweak_pos_value = SavedProperty(db,'tweak_value',0.001).init()
 
-    def __init(self):
-        pass
-
-    def init(self):
+    def __init__(self):
         from caproto.threading.client import Context
         ctx = Context()
         self.monitor, = ctx.get_pvs('BEAMLINE:motor.VAL')
@@ -74,33 +71,31 @@ class Choices():
         pass
 
 class Motors():
+    """Motor client object. Connects to selected PVs"""
+
     db = DataBase(root = os.getcwd(), name = 'Motor')
     tweak_pos_value = SavedProperty(db,'tweak_pos_value',0.050).init()
 
     def __init__(self):
-        pass
-
-    def init(self):
         from caproto.threading.client import Context
         ctx = Context()
         self.rbv_monitor, self.val_monitor = ctx.get_pvs('BEAMLINE:motor.RBV', 'BEAMLINE:motor.VAL')
 
-
+        #create subscription objects
         self.sub = {}
         self.sub['rbv_monitor'] = self.rbv_monitor.subscribe()
         self.sub['val_monitor'] = self.val_monitor.subscribe()
 
+        #bind callback function with the subscription objects. The bound callback function will be called if new PV is posted.
         self.token = {}
         self.token['rbv_monitor'] = self.sub['rbv_monitor'].add_callback(self.rbv_monitor_callback)
         self.token['val_monitor'] = self.sub['val_monitor'].add_callback(self.val_monitor_callback)
 
 
     def rbv_monitor_callback(self,sub, response = None):
-        pass
-        #print('x_rbv_monitor_callback: Received response from', sub.data[0])
+        print('rbv_monitor_callback: Received response from', sub.data[0])
     def val_monitor_callback(self,sub, response = None):
-        pass
-        #print('x_val_monitor_callback: Received response from', sub.data[0])
+        print('val_monitor_callback: Received response from', sub.data[0])
 
     def jog(self, value = 0.5):
         from time import sleep
@@ -131,14 +126,18 @@ class Server(PVGroup):
 
     # DOWNSTREAM TABLE
     running = pvproperty(value=1)
-
-    disabled_pv = pvproperty(value=1.0)
     jog = pvproperty(value=0.0)
     enum_strings=['Insert','Retract',' ']
     choices = pvproperty(value=' ',enum_strings=enum_strings , dtype=ChannelType.ENUM)
 
     @running.startup
     async def running(self, instance, async_lib):
+        """
+        the running function will be executed on creation and startup of the running PV.
+
+        first, it creates two asynchronous threadsafe queues: put_queue and get_queue.
+        Second it start "while True" loop which checks if there are any entries in the put_queue. This is a pathway to communicate between outside objects.
+        """
         print('* request method called at server startup @start.startup')
         self.put_queue = async_lib.ThreadsafeQueue()
         self.get_queue = async_lib.ThreadsafeQueue()
@@ -157,6 +156,9 @@ class Server(PVGroup):
 
     @jog.putter
     async def jog(self, instance, value):
+        """
+        called when the a new value is written into "jog" PV
+        """
         print(f"Server: {'jog'} Got 'put' request from outside: new value is {value} and type {type(value)}")
         if float(value) == 1.0:
             motors.jog()
@@ -167,6 +169,9 @@ class Server(PVGroup):
 
     @jog.getter
     async def jog(self, instance):
+        """
+        called when the a new value is readby a client
+        """
         pass
 
     @choices.putter
@@ -190,9 +195,8 @@ class Server(PVGroup):
 
 if __name__ == '__main__':
     choices = Choices()
-    choices.init()
     motors = Motors()
-    motors.init()
+
 
 
     ioc_options, run_options = ioc_arg_parser(
