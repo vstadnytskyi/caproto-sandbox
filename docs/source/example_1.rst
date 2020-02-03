@@ -4,13 +4,13 @@ Example 1 Codes
 
 Consists of:
 
-1) Mock motor record
+1) Mock motor record (example_1_motor.py)
 
-2) Server (middle man)
+2) Server (middle man) (example_1_server.py)
 
-3) GUI
+3) GUI (example_1_gui.py)
 
-4) Client
+4) Client (example_1_client.py)
 
 Two codes need to be running in to different shells\terminals. make sure to change directory to the directory with example_1 codes.
 
