@@ -34,6 +34,9 @@ class Choices():
 
 
     def callback_monitor(self,sub, response = None):
+        """
+        monitor callback functnio will be executed when a PV is written into.
+        """
         print('callback_monitor: Received response from', sub.data[0])
         if abs(sub.data[0] - self.insert_pos) < 0.002:
             dict = {}

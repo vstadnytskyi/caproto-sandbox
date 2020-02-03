@@ -1,5 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""
+Very simple graphical user interface.
+- 'Dropdown' menu is an indicator and a selector for saved motor position
+- "jog button" tweaks a motor value by a tweak value one way and back.
+- static text field shows current RBV value
+- "control float field" allows interaction with VAL PV
+
+Rules:
+the inserted state has position of 0
+the retracted state has position of 1 
+
+"""
 
 import wx
 import epics
