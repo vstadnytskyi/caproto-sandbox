@@ -106,7 +106,7 @@ class Motors():
         curr = self.val_monitor.read().data[0]
         new = curr + value
         self.val_monitor.write(float(new))
-        sleep(2.5)
+        sleep(1)
         print('Server to Motor: move negative')
         curr = self.val_monitor.read().data[0]
         new = curr - value
