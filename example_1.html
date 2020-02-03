@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Example 1 &mdash; caproto sandbox 0.0.0.post22+g4699e8b documentation</title>
+  <title>Example 1 &mdash; caproto sandbox 0.0.0.post25+gde3ba6e documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.0.0.post22+g4699e8b
+                0.0.0.post25+gde3ba6e
               </div>
             
           
@@ -91,7 +91,11 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Example 1</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Example 1</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#mock-motor-record">Mock motor record</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#server">Server</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="release-history.html">Release History</a></li>
 <li class="toctree-l1"><a class="reference internal" href="min_versions.html">Minimum Version of Python and NumPy</a></li>
 </ul>
@@ -160,14 +164,115 @@
             
   <div class="section" id="example-1">
 <h1>Example 1<a class="headerlink" href="#example-1" title="Permalink to this headline">¶</a></h1>
-<p>Consists of:
-1) Motor record
-2) Server (middle man)
-3) GUI
-4) Client</p>
-<p>At the command line:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$
+<p>Consists of:</p>
+<ol class="arabic simple">
+<li><p>Mock motor record</p></li>
+<li><p>Server (middle man)</p></li>
+<li><p>GUI</p></li>
+<li><p>Client</p></li>
+</ol>
+<div class="section" id="mock-motor-record">
+<h2>Mock motor record<a class="headerlink" href="#mock-motor-record" title="Permalink to this headline">¶</a></h2>
+<p>Simple mock motor record with three PVs: VAL, RBV and running.</p>
+<dl class="class">
+<dt id="caproto_sandbox.example_1_motor.Server">
+<em class="property">class </em><code class="sig-prename descclassname">caproto_sandbox.example_1_motor.</code><code class="sig-name descname">Server</code><span class="sig-paren">(</span><em class="sig-param">prefix</em>, <em class="sig-param">*</em>, <em class="sig-param">macros=None</em>, <em class="sig-param">parent=None</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/caproto_sandbox/example_1_motor.html#Server"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#caproto_sandbox.example_1_motor.Server" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="server">
+<h2>Server<a class="headerlink" href="#server" title="Permalink to this headline">¶</a></h2>
+<p>There are three python classes in the file. The “Server” is a caproto PVGroup class and Choices, Motors are client classes that provide simple interface.</p>
+<dl class="class">
+<dt id="caproto_sandbox.example_1_server.Server">
+<em class="property">class </em><code class="sig-prename descclassname">caproto_sandbox.example_1_server.</code><code class="sig-name descname">Server</code><span class="sig-paren">(</span><em class="sig-param">prefix</em>, <em class="sig-param">*</em>, <em class="sig-param">macros=None</em>, <em class="sig-param">parent=None</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/caproto_sandbox/example_1_server.html#Server"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#caproto_sandbox.example_1_server.Server" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="caproto_sandbox.example_1_server.Choices">
+<em class="property">class </em><code class="sig-prename descclassname">caproto_sandbox.example_1_server.</code><code class="sig-name descname">Choices</code><a class="reference internal" href="_modules/caproto_sandbox/example_1_server.html#Choices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#caproto_sandbox.example_1_server.Choices" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="caproto_sandbox.example_1_server.Choices.saved_positions">
+<em class="property">property </em><code class="sig-name descname">saved_positions</code><a class="headerlink" href="#caproto_sandbox.example_1_server.Choices.saved_positions" title="Permalink to this definition">¶</a></dt>
+<dd><p>getter for SavedProperty. returns saved value if it exists in the database, otherwise returns default_value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>name :: (string)</strong></dt><dd><p>name of the entry in the database.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>value :: (object)</dt><dd><p>returns a value stored with the selected key in the database</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="go">&gt;&gt;&gt;</span>
 </pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="caproto_sandbox.example_1_server.Choices.tweak_pos_value">
+<em class="property">property </em><code class="sig-name descname">tweak_pos_value</code><a class="headerlink" href="#caproto_sandbox.example_1_server.Choices.tweak_pos_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>getter for SavedProperty. returns saved value if it exists in the database, otherwise returns default_value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>name :: (string)</strong></dt><dd><p>name of the entry in the database.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>value :: (object)</dt><dd><p>returns a value stored with the selected key in the database</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<p>The Motors class has two PVs hard-coded: BEAMLINE:motor.RBV and BEAMLINE:motor.VAL. it subscribes to PVs and act if new values is posted. The
+arrival of new value calls a callback function.</p>
+<dl class="class">
+<dt id="caproto_sandbox.example_1_server.Motors">
+<em class="property">class </em><code class="sig-prename descclassname">caproto_sandbox.example_1_server.</code><code class="sig-name descname">Motors</code><a class="reference internal" href="_modules/caproto_sandbox/example_1_server.html#Motors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#caproto_sandbox.example_1_server.Motors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Motor client object. Connects to selected PVs</p>
+<dl class="method">
+<dt id="caproto_sandbox.example_1_server.Motors.tweak_pos_value">
+<em class="property">property </em><code class="sig-name descname">tweak_pos_value</code><a class="headerlink" href="#caproto_sandbox.example_1_server.Motors.tweak_pos_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>getter for SavedProperty. returns saved value if it exists in the database, otherwise returns default_value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>name :: (string)</strong></dt><dd><p>name of the entry in the database.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>value :: (object)</dt><dd><p>returns a value stored with the selected key in the database</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 </div>
 

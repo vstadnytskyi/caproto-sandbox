@@ -1,0 +1,407 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>caproto_sandbox.example_1_server &mdash; caproto sandbox 0.0.0.post25+gde3ba6e documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script type="text/javascript" src="../../_static/clipboard.min.js"></script>
+        <script type="text/javascript" src="../../_static/copybutton.js"></script>
+        <script type="text/javascript">var copybuttonSkipText = '>>> ';</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> caproto sandbox
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.0.post25+gde3ba6e
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../example_1.html">Example 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-history.html">Release History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../min_versions.html">Minimum Version of Python and NumPy</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">caproto sandbox</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>caproto_sandbox.example_1_server</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for caproto_sandbox.example_1_server</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">#</span>
+<span class="c1">#Beamline Configuration Server. Primarly used to service the Beamline configuration panel and provide flexibility in communication with 14IDB motors.</span>
+
+<span class="kn">from</span> <span class="nn">EPICS_CA.CAServer</span> <span class="kn">import</span> <span class="n">casput</span>
+<span class="c1">#Configuration Modes</span>
+<span class="c1">#!/usr/bin/env python3</span>
+
+<span class="kn">from</span> <span class="nn">caproto.server</span> <span class="kn">import</span> <span class="n">pvproperty</span><span class="p">,</span> <span class="n">PVGroup</span><span class="p">,</span> <span class="n">SubGroup</span><span class="p">,</span> <span class="n">ioc_arg_parser</span><span class="p">,</span> <span class="n">run</span>
+<span class="kn">from</span> <span class="nn">caproto</span> <span class="kn">import</span> <span class="n">ChannelType</span>
+<span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">debug</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">warning</span><span class="p">,</span> <span class="n">error</span>
+
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="kn">from</span> <span class="nn">tempfile</span> <span class="kn">import</span> <span class="n">gettempdir</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">ubcs_auxiliary.saved_property</span> <span class="kn">import</span> <span class="n">DataBase</span><span class="p">,</span> <span class="n">SavedProperty</span>
+
+<div class="viewcode-block" id="Choices"><a class="viewcode-back" href="../../example_1.html#caproto_sandbox.example_1_server.Choices">[docs]</a><span class="k">class</span> <span class="nc">Choices</span><span class="p">():</span>
+
+    <span class="n">db</span> <span class="o">=</span> <span class="n">DataBase</span><span class="p">(</span><span class="n">root</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Choices&#39;</span><span class="p">)</span>
+    <span class="n">saved_positions</span> <span class="o">=</span> <span class="n">SavedProperty</span><span class="p">(</span><span class="n">db</span><span class="p">,</span><span class="s1">&#39;saved_positions&#39;</span><span class="p">,{})</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+    <span class="n">tweak_pos_value</span> <span class="o">=</span> <span class="n">SavedProperty</span><span class="p">(</span><span class="n">db</span><span class="p">,</span><span class="s1">&#39;tweak_value&#39;</span><span class="p">,</span><span class="mf">0.001</span><span class="p">)</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">caproto.threading.client</span> <span class="kn">import</span> <span class="n">Context</span>
+        <span class="n">ctx</span> <span class="o">=</span> <span class="n">Context</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">monitor</span><span class="p">,</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">get_pvs</span><span class="p">(</span><span class="s1">&#39;BEAMLINE:motor.VAL&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sub</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">monitor</span><span class="o">.</span><span class="n">subscribe</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sub</span><span class="o">.</span><span class="n">add_callback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">callback_monitor</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">insert_pos</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">retract_pos</span> <span class="o">=</span> <span class="mf">5.0</span>
+
+
+    <span class="k">def</span> <span class="nf">callback_monitor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">sub</span><span class="p">,</span> <span class="n">response</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;callback_monitor: Received response from&#39;</span><span class="p">,</span> <span class="n">sub</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">sub</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">insert_pos</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.002</span><span class="p">:</span>
+            <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="nb">dict</span><span class="p">[</span><span class="s1">&#39;pv&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;choices&#39;</span>
+            <span class="nb">dict</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Insert&quot;</span>
+        <span class="k">elif</span> <span class="nb">abs</span><span class="p">(</span><span class="n">sub</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">retract_pos</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.002</span><span class="p">:</span>
+            <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="nb">dict</span><span class="p">[</span><span class="s1">&#39;pv&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;choices&#39;</span>
+            <span class="nb">dict</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Retract&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="nb">dict</span><span class="p">[</span><span class="s1">&#39;pv&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;choices&#39;</span>
+            <span class="nb">dict</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span>
+        <span class="n">io</span><span class="o">.</span><span class="n">put_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">curr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">monitor</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;get_state </span><span class="si">{curr}</span><span class="s1"> and insert </span><span class="si">{self.insert_pos}</span><span class="s1"> and retract </span><span class="si">{self.retract_pos}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;{abs(curr - self.insert_pos) &lt; 0.002}&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">curr</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">insert_pos</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.002</span><span class="p">:</span>
+            <span class="n">reply</span> <span class="o">=</span> <span class="s2">&quot;Insert&quot;</span>
+        <span class="k">elif</span> <span class="nb">abs</span><span class="p">(</span><span class="n">curr</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">retract_pos</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.002</span><span class="p">:</span>
+            <span class="n">reply</span> <span class="o">=</span> <span class="s2">&quot;Retract&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">reply</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;get_state </span><span class="si">{reply}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;pv&#39;</span><span class="p">:</span><span class="s1">&#39;choices&#39;</span><span class="p">,</span><span class="s1">&#39;value&#39;</span><span class="p">:</span><span class="n">reply</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">monitor</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">insert_pos</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">retract</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">monitor</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">retract_pos</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">insert_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Motors"><a class="viewcode-back" href="../../example_1.html#caproto_sandbox.example_1_server.Motors">[docs]</a><span class="k">class</span> <span class="nc">Motors</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Motor client object. Connects to selected PVs&quot;&quot;&quot;</span>
+
+    <span class="n">db</span> <span class="o">=</span> <span class="n">DataBase</span><span class="p">(</span><span class="n">root</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Motor&#39;</span><span class="p">)</span>
+    <span class="n">tweak_pos_value</span> <span class="o">=</span> <span class="n">SavedProperty</span><span class="p">(</span><span class="n">db</span><span class="p">,</span><span class="s1">&#39;tweak_pos_value&#39;</span><span class="p">,</span><span class="mf">0.050</span><span class="p">)</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">caproto.threading.client</span> <span class="kn">import</span> <span class="n">Context</span>
+        <span class="n">ctx</span> <span class="o">=</span> <span class="n">Context</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rbv_monitor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_monitor</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">get_pvs</span><span class="p">(</span><span class="s1">&#39;BEAMLINE:motor.RBV&#39;</span><span class="p">,</span> <span class="s1">&#39;BEAMLINE:motor.VAL&#39;</span><span class="p">)</span>
+
+        <span class="c1">#create subscription objects</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sub</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sub</span><span class="p">[</span><span class="s1">&#39;rbv_monitor&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rbv_monitor</span><span class="o">.</span><span class="n">subscribe</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sub</span><span class="p">[</span><span class="s1">&#39;val_monitor&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_monitor</span><span class="o">.</span><span class="n">subscribe</span><span class="p">()</span>
+
+        <span class="c1">#bind callback function with the subscription objects. The bound callback function will be called if new PV is posted.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">token</span><span class="p">[</span><span class="s1">&#39;rbv_monitor&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sub</span><span class="p">[</span><span class="s1">&#39;rbv_monitor&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">add_callback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rbv_monitor_callback</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">token</span><span class="p">[</span><span class="s1">&#39;val_monitor&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sub</span><span class="p">[</span><span class="s1">&#39;val_monitor&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">add_callback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">val_monitor_callback</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">rbv_monitor_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">sub</span><span class="p">,</span> <span class="n">response</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;rbv_monitor_callback: Received response from&#39;</span><span class="p">,</span> <span class="n">sub</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">def</span> <span class="nf">val_monitor_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">sub</span><span class="p">,</span> <span class="n">response</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;val_monitor_callback: Received response from&#39;</span><span class="p">,</span> <span class="n">sub</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">jog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Server to Motor: move positive&#39;</span><span class="p">)</span>
+        <span class="n">curr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_monitor</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">new</span> <span class="o">=</span> <span class="n">curr</span> <span class="o">+</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val_monitor</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">new</span><span class="p">))</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mf">2.5</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Server to Motor: move negative&#39;</span><span class="p">)</span>
+        <span class="n">curr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_monitor</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">new</span> <span class="o">=</span> <span class="n">curr</span> <span class="o">-</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val_monitor</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">new</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">tweak_pos_up</span><span class="p">(</span><span class="bp">self</span><span class="p">,):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Motor: tweak_pos_up&#39;</span><span class="p">)</span>
+        <span class="n">curr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_monitor</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">new</span> <span class="o">=</span> <span class="n">curr</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">tweak_pos_value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val_monitor</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">new</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">tweak_pos_down</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Motor: tweak_pos_down&#39;</span><span class="p">)</span>
+        <span class="n">curr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_val_monitor</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">new</span> <span class="o">=</span> <span class="n">curr</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">tweak_pos_value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y_val_monitor</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">new</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Server"><a class="viewcode-back" href="../../example_1.html#caproto_sandbox.example_1_server.Server">[docs]</a><span class="k">class</span> <span class="nc">Server</span><span class="p">(</span><span class="n">PVGroup</span><span class="p">):</span>
+    <span class="n">io_put_queue</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># DOWNSTREAM TABLE</span>
+    <span class="n">running</span> <span class="o">=</span> <span class="n">pvproperty</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">jog</span> <span class="o">=</span> <span class="n">pvproperty</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">enum_strings</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Insert&#39;</span><span class="p">,</span><span class="s1">&#39;Retract&#39;</span><span class="p">,</span><span class="s1">&#39; &#39;</span><span class="p">]</span>
+    <span class="n">choices</span> <span class="o">=</span> <span class="n">pvproperty</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="n">enum_strings</span><span class="o">=</span><span class="n">enum_strings</span> <span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">ChannelType</span><span class="o">.</span><span class="n">ENUM</span><span class="p">)</span>
+
+    <span class="nd">@running</span><span class="o">.</span><span class="n">startup</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">running</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">async_lib</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        the running function will be executed on creation and startup of the running PV.</span>
+
+<span class="sd">        first, it creates two asynchronous threadsafe queues: put_queue and get_queue.</span>
+<span class="sd">        Second it start &quot;while True&quot; loop which checks if there are any entries in the put_queue. This is a pathway to communicate between outside objects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;* request method called at server startup @start.startup&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">put_queue</span> <span class="o">=</span> <span class="n">async_lib</span><span class="o">.</span><span class="n">ThreadsafeQueue</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_queue</span> <span class="o">=</span> <span class="n">async_lib</span><span class="o">.</span><span class="n">ThreadsafeQueue</span><span class="p">()</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="kc">True</span><span class="p">:</span> <span class="c1">#self.put_queue is not None:</span>
+                <span class="n">entry</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">put_queue</span><span class="o">.</span><span class="n">async_get</span><span class="p">()</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Async Put Queue: Got put request from the device: </span><span class="si">{entry}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">pv</span> <span class="o">=</span> <span class="n">entry</span><span class="p">[</span><span class="s1">&#39;pv&#39;</span><span class="p">]</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">entry</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">pv</span> <span class="o">==</span> <span class="s1">&#39;jog&#39;</span><span class="p">:</span>
+                    <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">jog</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">pv</span> <span class="o">==</span> <span class="s1">&#39;choices&#39;</span><span class="p">:</span>
+                    <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">choices</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">await</span> <span class="n">async_lib</span><span class="o">.</span><span class="n">library</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+
+    <span class="nd">@jog</span><span class="o">.</span><span class="n">putter</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">jog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        called when the a new value is written into &quot;jog&quot; PV</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Server: {&#39;jog&#39;} Got &#39;put&#39; request from outside: new value is </span><span class="si">{value}</span><span class="s2"> and type {type(value)}&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="mf">1.0</span><span class="p">:</span>
+            <span class="n">motors</span><span class="o">.</span><span class="n">jog</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;jogging motor&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{self.jog.value}</span><span class="s2">,{float(value)}&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">jog</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="mf">0.0</span> <span class="ow">and</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="mf">1.0</span><span class="p">:</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">put_queue</span><span class="o">.</span><span class="n">async_put</span><span class="p">({</span><span class="s1">&#39;pv&#39;</span><span class="p">:</span><span class="s1">&#39;jog&#39;</span><span class="p">,</span><span class="s1">&#39;value&#39;</span><span class="p">:</span><span class="mf">0.0</span><span class="p">})</span>
+
+    <span class="nd">@jog</span><span class="o">.</span><span class="n">getter</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">jog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        called when the a new value is readby a client</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@choices</span><span class="o">.</span><span class="n">putter</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">choices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;PV: {&#39;choices.putter&#39;} new value is </span><span class="si">{value}</span><span class="s2"> and current </span><span class="si">{self.choices.value}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">curr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">choices</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s1">&#39;Retract&#39;</span> <span class="ow">and</span> <span class="n">curr</span> <span class="o">!=</span> <span class="s1">&#39;Retract&#39;</span><span class="p">:</span>
+            <span class="n">choices</span><span class="o">.</span><span class="n">retract</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;Insert&quot;</span> <span class="ow">and</span> <span class="n">curr</span> <span class="o">!=</span> <span class="s1">&#39;Insert&#39;</span><span class="p">:</span>
+            <span class="n">choices</span><span class="o">.</span><span class="n">insert</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="kn">import</span> <span class="nn">asyncio</span>
+        <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+
+
+    <span class="nd">@choices</span><span class="o">.</span><span class="n">startup</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">choices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;PV: {&#39;choices.startup&#39;} current state is {choices.get_state()}&quot;</span><span class="p">)</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">put_queue</span><span class="o">.</span><span class="n">async_put</span><span class="p">(</span><span class="n">choices</span><span class="o">.</span><span class="n">get_state</span><span class="p">())</span></div>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">choices</span> <span class="o">=</span> <span class="n">Choices</span><span class="p">()</span>
+    <span class="n">motors</span> <span class="o">=</span> <span class="n">Motors</span><span class="p">()</span>
+
+
+
+    <span class="n">ioc_options</span><span class="p">,</span> <span class="n">run_options</span> <span class="o">=</span> <span class="n">ioc_arg_parser</span><span class="p">(</span>
+        <span class="n">default_prefix</span><span class="o">=</span><span class="s1">&#39;BEAMLINE:SERVER.&#39;</span><span class="p">,</span>
+        <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;description&#39;</span><span class="p">)</span>
+    <span class="n">io</span>  <span class="o">=</span> <span class="n">Server</span><span class="p">(</span><span class="o">**</span><span class="n">ioc_options</span><span class="p">)</span>
+
+    <span class="c1">#start async caproto server IO</span>
+    <span class="n">run</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">pvdb</span><span class="p">,</span> <span class="o">**</span><span class="n">run_options</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Valentyn Stadnytskyi
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
