@@ -53,7 +53,7 @@ Server
 ==================
 There are three python classes in the file. The "Server" is a caproto PVGroup class.
 
-.. automodule:: caproto_sandbox.worker_thread_device.Server
+.. automodule:: caproto_sandbox.worker_thread_server.Server
   :members:
   :undoc-members:
   :show-inheritance:

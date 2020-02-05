@@ -5,7 +5,7 @@ import time
 
 from caproto.server import pvproperty, PVGroup, ioc_arg_parser, run
 
-class WorkerThreadIOC(PVGroup):
+class Server(PVGroup):
     request = pvproperty(value=0.0)
     response = pvproperty(value=123456789012345.0)
 
@@ -48,5 +48,5 @@ if __name__ == '__main__':
     from worker_thread_device import Device
     device = Device()
 
-    ioc = WorkerThreadIOC(**ioc_options)
+    ioc = Server(**ioc_options)
     run(ioc.pvdb, **run_options)
