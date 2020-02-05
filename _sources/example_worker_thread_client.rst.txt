@@ -29,6 +29,7 @@ You should see something similar to the following 5 lines:
   * request method called at server startup
 
 Now with the client you can submit a command to a "request" PV and check response in the "response" PV
+
 .. code-block:: shell
 
   In [1]: request.write(1)

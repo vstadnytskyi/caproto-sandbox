@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Example Simple Device &mdash; caproto sandbox 0.0.0.post34+ga1680ef documentation</title>
+  <title>Example Simple Device &mdash; caproto sandbox 0.0.0.post35+g15ed7d6 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.0.0.post34+ga1680ef
+                0.0.0.post35+g15ed7d6
               </div>
             
           
@@ -188,17 +188,17 @@
 * request method called at server startup
 </pre></div>
 </div>
-<p>Now with the client you can submit a command to a “request” PV and check response in the “response” PV
-.. code-block:: shell</p>
-<blockquote>
-<div><p>In [1]: request.write(1)
-Out[1]: WriteNotifyResponse(data_type=&lt;ChannelType.DOUBLE: 6&gt;, data_count=1, status=CAStatusCode(name=’ECA_NORMAL’, code=0, code_with_severi
-ty=1, severity=&lt;CASeverity.SUCCESS: 1&gt;, success=1, defunct=False, description=’Normal successful completion’), ioid=0)</p>
-<p>In [2]: response.read()
-Out[2]: ReadNotifyResponse(data=array([1.58086159e+09]), data_type=&lt;ChannelType.DOUBLE: 6&gt;, data_count=1, status=CAStatusCode(name=’ECA_NORM
-AL’, code=0, code_with_severity=1, severity=&lt;CASeverity.SUCCESS: 1&gt;, success=1, defunct=False, description=’Normal successful completion’), i
-oid=1, metadata=None)</p>
-</div></blockquote>
+<p>Now with the client you can submit a command to a “request” PV and check response in the “response” PV</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>In <span class="o">[</span><span class="m">1</span><span class="o">]</span>: request.write<span class="o">(</span><span class="m">1</span><span class="o">)</span>
+Out<span class="o">[</span><span class="m">1</span><span class="o">]</span>: WriteNotifyResponse<span class="o">(</span><span class="nv">data_type</span><span class="o">=</span>&lt;ChannelType.DOUBLE: <span class="m">6</span>&gt;, <span class="nv">data_count</span><span class="o">=</span><span class="m">1</span>, <span class="nv">status</span><span class="o">=</span>CAStatusCode<span class="o">(</span><span class="nv">name</span><span class="o">=</span><span class="s1">&#39;ECA_NORMAL&#39;</span>, <span class="nv">code</span><span class="o">=</span><span class="m">0</span>, code_with_severi
+<span class="nv">ty</span><span class="o">=</span><span class="m">1</span>, <span class="nv">severity</span><span class="o">=</span>&lt;CASeverity.SUCCESS: <span class="m">1</span>&gt;, <span class="nv">success</span><span class="o">=</span><span class="m">1</span>, <span class="nv">defunct</span><span class="o">=</span>False, <span class="nv">description</span><span class="o">=</span><span class="s1">&#39;Normal successful completion&#39;</span><span class="o">)</span>, <span class="nv">ioid</span><span class="o">=</span><span class="m">0</span><span class="o">)</span>
+
+In <span class="o">[</span><span class="m">2</span><span class="o">]</span>: response.read<span class="o">()</span>
+Out<span class="o">[</span><span class="m">2</span><span class="o">]</span>: ReadNotifyResponse<span class="o">(</span><span class="nv">data</span><span class="o">=</span>array<span class="o">([</span><span class="m">1</span>.58086159e+09<span class="o">])</span>, <span class="nv">data_type</span><span class="o">=</span>&lt;ChannelType.DOUBLE: <span class="m">6</span>&gt;, <span class="nv">data_count</span><span class="o">=</span><span class="m">1</span>, <span class="nv">status</span><span class="o">=</span>CAStatusCode<span class="o">(</span><span class="nv">name</span><span class="o">=</span><span class="s1">&#39;ECA_NORM</span>
+<span class="s1">AL&#39;</span>, <span class="nv">code</span><span class="o">=</span><span class="m">0</span>, <span class="nv">code_with_severity</span><span class="o">=</span><span class="m">1</span>, <span class="nv">severity</span><span class="o">=</span>&lt;CASeverity.SUCCESS: <span class="m">1</span>&gt;, <span class="nv">success</span><span class="o">=</span><span class="m">1</span>, <span class="nv">defunct</span><span class="o">=</span>False, <span class="nv">description</span><span class="o">=</span><span class="s1">&#39;Normal successful completion&#39;</span><span class="o">)</span>, i
+<span class="nv">oid</span><span class="o">=</span><span class="m">1</span>, <span class="nv">metadata</span><span class="o">=</span>None<span class="o">)</span>
+</pre></div>
+</div>
 <div class="section" id="device">
 <h2>Device<a class="headerlink" href="#device" title="Permalink to this headline">¶</a></h2>
 <p>Simple mock motor record with three PVs: VAL, RBV and running.</p>
