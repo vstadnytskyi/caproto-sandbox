@@ -5,27 +5,9 @@ import time
 
 from caproto.server import pvproperty, PVGroup, ioc_arg_parser, run
 
-
-def worker(request_queue, response_queue):
-    i = itertools.count(1)
-    while True:
-        request = request_queue.get()
-
-        # In this toy example, the "request" is some number of seconds to
-        # sleep for, but it could be any blocking task.
-        print(f'Sleeping for {request} seconds...')
-        time.sleep(request)
-
-        # In this toy example, the "response" is just a counter of how many
-        # requests we have seen, but it could be anything.
-        counter_value = next(i)
-        response_queue.put(counter_value)
-        print('Done')
-
-
 class WorkerThreadIOC(PVGroup):
-    request = pvproperty(value=0, max_length=1)
-    response = pvproperty(value=0, max_length=1)
+    request = pvproperty(value=0.0)
+    response = pvproperty(value=123456789012345.0)
 
     # NOTE the decorator used here:
     @request.startup
@@ -36,7 +18,7 @@ class WorkerThreadIOC(PVGroup):
         self.response_queue = async_lib.ThreadsafeQueue()
 
         # Start a separate thread that consumes requests and sends responses.
-        thread = threading.Thread(target=worker,
+        thread = threading.Thread(target=device.get_time,
                                   daemon=True,
                                   kwargs=dict(request_queue=self.request_queue,
                                               response_queue=self.response_queue))
@@ -62,6 +44,9 @@ if __name__ == '__main__':
     ioc_options, run_options = ioc_arg_parser(
         default_prefix='wt:',
         desc='Run an IOC that does blocking tasks on a worker thread.')
+
+    from worker_thread_device import Device
+    device = Device()
 
     ioc = WorkerThreadIOC(**ioc_options)
     run(ioc.pvdb, **run_options)

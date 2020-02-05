@@ -6,7 +6,7 @@
 #Configuration Modes
 #!/usr/bin/env python3
 
-from caproto.server import pvproperty, PVGroup, SubGroup, ioc_arg_parser, run
+from caproto.server import pvproperty, PVGroup, ioc_arg_parser, run
 from caproto import ChannelType
 from logging import debug, info, warning, error
 
@@ -18,9 +18,24 @@ from ubcs_auxiliary.saved_property import DataBase, SavedProperty
 class Server(PVGroup):
 
     RBV = pvproperty(value=0.0,
-                    precision = 3)
+                    read_only = True,
+                    upper_alarm_limit=6.0,
+                    lower_alarm_limit=-1.0,
+                    upper_warning_limit=5.5,
+                    lower_warning_limit=-1.0,
+                    units="mm",
+                    precision=3,
+                    doc='motor position')
     VAL = pvproperty(value=0.0,
-                    precision = 3)
+                    upper_alarm_limit=6.0,
+                    lower_alarm_limit=-1.0,
+                    upper_warning_limit=5.5,
+                    lower_warning_limit=-1.0,
+                    upper_ctrl_limit=7.0,
+                    lower_ctrl_limit=-3.0,
+                    units="mm",
+                    precision=3,
+                    doc='motor position')
 
     running = pvproperty(value=1)
 
@@ -63,8 +78,6 @@ class Server(PVGroup):
         await self.put_queue.async_put({'pv':'RBV','value':value})
 
 if __name__ == '__main__':
-
-
     ioc_options, run_options = ioc_arg_parser(
         default_prefix='BEAMLINE:motor.',
         desc='description')
