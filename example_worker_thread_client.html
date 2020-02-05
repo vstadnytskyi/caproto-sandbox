@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Example Simple Device &mdash; caproto sandbox 0.0.0.post35+g15ed7d6 documentation</title>
+  <title>Example Simple Device &mdash; caproto sandbox 0.0.0.post36+gb0d04a6 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.0.0.post35+g15ed7d6
+                0.0.0.post36+gb0d04a6
               </div>
             
           
@@ -205,7 +205,14 @@ Out<span class="o">[</span><span class="m">2</span><span class="o">]</span>: Rea
 <dl class="class">
 <dt id="caproto_sandbox.worker_thread_device.Device">
 <em class="property">class </em><code class="sig-prename descclassname">caproto_sandbox.worker_thread_device.</code><code class="sig-name descname">Device</code><a class="reference internal" href="_modules/caproto_sandbox/worker_thread_device.html#Device"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#caproto_sandbox.worker_thread_device.Device" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><dl class="method">
+<dt id="caproto_sandbox.worker_thread_device.Device.get_time">
+<code class="sig-name descname">get_time</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">request_queue</em>, <em class="sig-param">response_queue</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/caproto_sandbox/worker_thread_device.html#Device.get_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#caproto_sandbox.worker_thread_device.Device.get_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>In this toy example, the “request” is some number of seconds to sleep for, but it could be any blocking task. For example, it can be a command to a device to perform some task.</p>
+<p>In this example, we return current time after sleeping 0.2 s. This emulates communication to a device that takes time and return of the new value.</p>
+</dd></dl>
+
+</dd></dl>
 
 </div>
 <div class="section" id="server">

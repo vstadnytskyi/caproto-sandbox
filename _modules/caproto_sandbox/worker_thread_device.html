@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>caproto_sandbox.worker_thread_device &mdash; caproto sandbox 0.0.0.post35+g15ed7d6 documentation</title>
+  <title>caproto_sandbox.worker_thread_device &mdash; caproto sandbox 0.0.0.post36+gb0d04a6 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.0.0.post35+g15ed7d6
+                0.0.0.post36+gb0d04a6
               </div>
             
           
@@ -164,19 +164,21 @@
 <span class="kn">from</span> <span class="nn">caproto.server</span> <span class="kn">import</span> <span class="n">pvproperty</span><span class="p">,</span> <span class="n">PVGroup</span><span class="p">,</span> <span class="n">ioc_arg_parser</span><span class="p">,</span> <span class="n">run</span>
 
 <div class="viewcode-block" id="Device"><a class="viewcode-back" href="../../example_worker_thread_client.html#caproto_sandbox.worker_thread_device.Device">[docs]</a><span class="k">class</span> <span class="nc">Device</span><span class="p">():</span>
-    <span class="k">def</span> <span class="nf">get_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request_queue</span><span class="p">,</span> <span class="n">response_queue</span><span class="p">):</span>
-        <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span><span class="p">,</span> <span class="n">time</span>
-        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="n">request</span> <span class="o">=</span> <span class="n">request_queue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<div class="viewcode-block" id="Device.get_time"><a class="viewcode-back" href="../../example_worker_thread_client.html#caproto_sandbox.worker_thread_device.Device.get_time">[docs]</a>    <span class="k">def</span> <span class="nf">get_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request_queue</span><span class="p">,</span> <span class="n">response_queue</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        In this toy example, the &quot;request&quot; is some number of seconds to sleep for, but it could be any blocking task. For example, it can be a command to a device to perform some task.</span>
 
-            <span class="c1"># In this toy example, the &quot;request&quot; is some number of seconds to</span>
-            <span class="c1"># sleep for, but it could be any blocking task. For example, it can be a command to a device to perform some task.</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;performing the task of reading &quot;position&quot;&#39;</span><span class="p">)</span>
-            <span class="n">sleep</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
-            <span class="n">position</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
-            <span class="c1"># In this toy example, the &quot;response&quot; is just a counter of how many</span>
-            <span class="c1"># requests we have seen, but it could be anything.</span>
-            <span class="n">response_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">position</span><span class="p">)</span></div>
+<span class="sd">        In this example, we return current time after sleeping 0.2 s. This emulates communication to a device that takes time and return of the new value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span><span class="p">,</span> <span class="n">time</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;performing the task of reading &quot;position&quot;&#39;</span><span class="p">)</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
+        <span class="n">position</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+        <span class="c1"># In this toy example, the &quot;response&quot; is just a counter of how many</span>
+        <span class="c1"># requests we have seen, but it could be anything.</span>
+        <span class="n">response_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">position</span><span class="p">)</span></div></div>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
