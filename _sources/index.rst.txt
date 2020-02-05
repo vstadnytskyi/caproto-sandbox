@@ -12,5 +12,6 @@ caproto sandbox Documentation
    installation
    usage
    example_1
+   example_worker_thread_client
    release-history
    min_versions

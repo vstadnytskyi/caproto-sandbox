@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>caproto_sandbox.example_1_motor &mdash; caproto sandbox 0.0.0.post29+gc2712b2 documentation</title>
+  <title>caproto_sandbox.example_1_motor &mdash; caproto sandbox 0.0.0.post31+gb5a7407 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.0.0.post29+gc2712b2
+                0.0.0.post31+gb5a7407
               </div>
             
           
@@ -90,6 +90,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../example_1.html">Example 1 Codes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../example_worker_thread_client.html">Example 1 Codes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../release-history.html">Release History</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../min_versions.html">Minimum Version of Python and NumPy</a></li>
 </ul>
@@ -163,7 +164,7 @@
 <span class="c1">#Configuration Modes</span>
 <span class="c1">#!/usr/bin/env python3</span>
 
-<span class="kn">from</span> <span class="nn">caproto.server</span> <span class="kn">import</span> <span class="n">pvproperty</span><span class="p">,</span> <span class="n">PVGroup</span><span class="p">,</span> <span class="n">SubGroup</span><span class="p">,</span> <span class="n">ioc_arg_parser</span><span class="p">,</span> <span class="n">run</span>
+<span class="kn">from</span> <span class="nn">caproto.server</span> <span class="kn">import</span> <span class="n">pvproperty</span><span class="p">,</span> <span class="n">PVGroup</span><span class="p">,</span> <span class="n">ioc_arg_parser</span><span class="p">,</span> <span class="n">run</span>
 <span class="kn">from</span> <span class="nn">caproto</span> <span class="kn">import</span> <span class="n">ChannelType</span>
 <span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">debug</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">warning</span><span class="p">,</span> <span class="n">error</span>
 
@@ -175,9 +176,24 @@
 <div class="viewcode-block" id="Server"><a class="viewcode-back" href="../../example_1.html#caproto_sandbox.example_1_motor.Server">[docs]</a><span class="k">class</span> <span class="nc">Server</span><span class="p">(</span><span class="n">PVGroup</span><span class="p">):</span>
 
     <span class="n">RBV</span> <span class="o">=</span> <span class="n">pvproperty</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
-                    <span class="n">precision</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span>
+                    <span class="n">read_only</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                    <span class="n">upper_alarm_limit</span><span class="o">=</span><span class="mf">6.0</span><span class="p">,</span>
+                    <span class="n">lower_alarm_limit</span><span class="o">=-</span><span class="mf">1.0</span><span class="p">,</span>
+                    <span class="n">upper_warning_limit</span><span class="o">=</span><span class="mf">5.5</span><span class="p">,</span>
+                    <span class="n">lower_warning_limit</span><span class="o">=-</span><span class="mf">1.0</span><span class="p">,</span>
+                    <span class="n">units</span><span class="o">=</span><span class="s2">&quot;mm&quot;</span><span class="p">,</span>
+                    <span class="n">precision</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                    <span class="n">doc</span><span class="o">=</span><span class="s1">&#39;motor position&#39;</span><span class="p">)</span>
     <span class="n">VAL</span> <span class="o">=</span> <span class="n">pvproperty</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
-                    <span class="n">precision</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span>
+                    <span class="n">upper_alarm_limit</span><span class="o">=</span><span class="mf">6.0</span><span class="p">,</span>
+                    <span class="n">lower_alarm_limit</span><span class="o">=-</span><span class="mf">1.0</span><span class="p">,</span>
+                    <span class="n">upper_warning_limit</span><span class="o">=</span><span class="mf">5.5</span><span class="p">,</span>
+                    <span class="n">lower_warning_limit</span><span class="o">=-</span><span class="mf">1.0</span><span class="p">,</span>
+                    <span class="n">upper_ctrl_limit</span><span class="o">=</span><span class="mf">7.0</span><span class="p">,</span>
+                    <span class="n">lower_ctrl_limit</span><span class="o">=-</span><span class="mf">3.0</span><span class="p">,</span>
+                    <span class="n">units</span><span class="o">=</span><span class="s2">&quot;mm&quot;</span><span class="p">,</span>
+                    <span class="n">precision</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                    <span class="n">doc</span><span class="o">=</span><span class="s1">&#39;motor position&#39;</span><span class="p">)</span>
 
     <span class="n">running</span> <span class="o">=</span> <span class="n">pvproperty</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
@@ -220,8 +236,6 @@
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">put_queue</span><span class="o">.</span><span class="n">async_put</span><span class="p">({</span><span class="s1">&#39;pv&#39;</span><span class="p">:</span><span class="s1">&#39;RBV&#39;</span><span class="p">,</span><span class="s1">&#39;value&#39;</span><span class="p">:</span><span class="n">value</span><span class="p">})</span></div>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-
-
     <span class="n">ioc_options</span><span class="p">,</span> <span class="n">run_options</span> <span class="o">=</span> <span class="n">ioc_arg_parser</span><span class="p">(</span>
         <span class="n">default_prefix</span><span class="o">=</span><span class="s1">&#39;BEAMLINE:motor.&#39;</span><span class="p">,</span>
         <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;description&#39;</span><span class="p">)</span>
