@@ -15,6 +15,26 @@ from tempfile import gettempdir
 import os
 from ubcs_auxiliary.saved_property import DataBase, SavedProperty
 
+def move_motor(pos,put_queue):
+    from numpy import arange
+    from time import sleep
+    print("move_motor")
+    step = 0.001
+    steps_per_second = 1000
+    update = 0.5
+    curr = float(io.RBV.value)
+    if curr > pos:
+        step = - step
+    arr = list(arange(curr,pos,step*steps_per_second*update))
+    lst = list(arr) + [pos]
+    print(lst)
+    for item in lst:
+        print(item)
+        put_queue.put({'pv':'RBV','value':item})
+        sleep(update)
+
+
+
 class Server(PVGroup):
 
     RBV = pvproperty(value=0.0,
@@ -75,7 +95,9 @@ class Server(PVGroup):
     @VAL.putter
     async def VAL(self, instance, value):
         print('VAL getter',value)
-        await self.put_queue.async_put({'pv':'RBV','value':value})
+        from _thread import start_new_thread
+        start_new_thread(move_motor,(float(value),self.put_queue))
+        #await self.put_queue.async_put({'pv':'RBV','value':value})
 
 if __name__ == '__main__':
     ioc_options, run_options = ioc_arg_parser(
