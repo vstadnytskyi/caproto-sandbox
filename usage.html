@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Principle of design and operation of CA server &mdash; caproto sandbox 0.0.0.post37+g2757fa0 documentation</title>
+  <title>Principle of design and operation of CA server &mdash; caproto sandbox 0.0.0.post38+g3ebd79d documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.0.0.post37+g2757fa0
+                0.0.0.post38+g3ebd79d
               </div>
             
           
@@ -198,6 +198,12 @@ I am not a developer of the caproto library, I am a user. Here I describe my vis
     <span class="bp">self</span><span class="o">.</span><span class="n">get_queue</span> <span class="o">=</span> <span class="n">async_lib</span><span class="o">.</span><span class="n">ThreadsafeQueue</span><span class="p">()</span>
 </pre></div>
 </div>
+<p>The important part of the caproto server design is the following while loop. This loop is defined in the &#64;running.startup function</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">entry</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">put_queue</span><span class="o">.</span><span class="n">async_get</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This line will asynchronously wait for a new entry in the put_queue.</p>
 </div>
 <div class="section" id="part-3-putters-and-getters">
 <h2>Part 3: Putters and Getters<a class="headerlink" href="#part-3-putters-and-getters" title="Permalink to this headline">¶</a></h2>
