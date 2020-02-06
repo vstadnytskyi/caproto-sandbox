@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>caproto_sandbox.example_1_motor &mdash; caproto sandbox 0.0.0.post36+gb0d04a6 documentation</title>
+  <title>caproto_sandbox.example_1_motor &mdash; caproto sandbox 0.0.0.post37+g2757fa0 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.0.0.post36+gb0d04a6
+                0.0.0.post37+g2757fa0
               </div>
             
           
@@ -88,7 +88,7 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Principle of design and operation of CA server</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../example_1.html">Example 1 Codes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../example_worker_thread_client.html">Example Simple Device</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../release-history.html">Release History</a></li>
@@ -173,6 +173,26 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">ubcs_auxiliary.saved_property</span> <span class="kn">import</span> <span class="n">DataBase</span><span class="p">,</span> <span class="n">SavedProperty</span>
 
+<span class="k">def</span> <span class="nf">move_motor</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span><span class="n">put_queue</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">arange</span>
+    <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;move_motor&quot;</span><span class="p">)</span>
+    <span class="n">step</span> <span class="o">=</span> <span class="mf">0.001</span>
+    <span class="n">steps_per_second</span> <span class="o">=</span> <span class="mi">1000</span>
+    <span class="n">update</span> <span class="o">=</span> <span class="mf">0.5</span>
+    <span class="n">curr</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">RBV</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">curr</span> <span class="o">&gt;</span> <span class="n">pos</span><span class="p">:</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="o">-</span> <span class="n">step</span>
+    <span class="n">arr</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">arange</span><span class="p">(</span><span class="n">curr</span><span class="p">,</span><span class="n">pos</span><span class="p">,</span><span class="n">step</span><span class="o">*</span><span class="n">steps_per_second</span><span class="o">*</span><span class="n">update</span><span class="p">))</span>
+    <span class="n">lst</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">pos</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">put_queue</span><span class="o">.</span><span class="n">put</span><span class="p">({</span><span class="s1">&#39;pv&#39;</span><span class="p">:</span><span class="s1">&#39;RBV&#39;</span><span class="p">,</span><span class="s1">&#39;value&#39;</span><span class="p">:</span><span class="n">item</span><span class="p">})</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="n">update</span><span class="p">)</span>
+
+
+
 <div class="viewcode-block" id="Server"><a class="viewcode-back" href="../../example_1.html#caproto_sandbox.example_1_motor.Server">[docs]</a><span class="k">class</span> <span class="nc">Server</span><span class="p">(</span><span class="n">PVGroup</span><span class="p">):</span>
 
     <span class="n">RBV</span> <span class="o">=</span> <span class="n">pvproperty</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
@@ -233,7 +253,9 @@
     <span class="nd">@VAL</span><span class="o">.</span><span class="n">putter</span>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">VAL</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;VAL getter&#39;</span><span class="p">,</span><span class="n">value</span><span class="p">)</span>
-        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">put_queue</span><span class="o">.</span><span class="n">async_put</span><span class="p">({</span><span class="s1">&#39;pv&#39;</span><span class="p">:</span><span class="s1">&#39;RBV&#39;</span><span class="p">,</span><span class="s1">&#39;value&#39;</span><span class="p">:</span><span class="n">value</span><span class="p">})</span></div>
+        <span class="kn">from</span> <span class="nn">_thread</span> <span class="kn">import</span> <span class="n">start_new_thread</span>
+        <span class="n">start_new_thread</span><span class="p">(</span><span class="n">move_motor</span><span class="p">,(</span><span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">),</span><span class="bp">self</span><span class="o">.</span><span class="n">put_queue</span><span class="p">))</span></div>
+        <span class="c1">#await self.put_queue.async_put({&#39;pv&#39;:&#39;RBV&#39;,&#39;value&#39;:value})</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">ioc_options</span><span class="p">,</span> <span class="n">run_options</span> <span class="o">=</span> <span class="n">ioc_arg_parser</span><span class="p">(</span>
