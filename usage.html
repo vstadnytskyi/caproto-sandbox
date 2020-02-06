@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Principle of design and operation of CA server &mdash; caproto sandbox 0.0.0.post39+g6d522c3 documentation</title>
+  <title>Principle of design and operation of CA server &mdash; caproto sandbox 0.0.0.post40+gbeb4b18 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.0.0.post39+g6d522c3
+                0.0.0.post40+gbeb4b18
               </div>
             
           
@@ -166,7 +166,7 @@
            <div itemprop="articleBody">
             
   <p>Disclaimer:
-I am not a developer of the caproto library, I am a user. Here I describe my vision and understanding of the structure of caproto server from a user point of view.</p>
+I am not a developer of the caproto library, I am a user. Here I describe my vision and understanding of the structure of caproto server from a user point of view. I am also hoping to provide some organization solutions.</p>
 <div class="section" id="principle-of-design-and-operation-of-ca-server">
 <h1>Principle of design and operation of CA server<a class="headerlink" href="#principle-of-design-and-operation-of-ca-server" title="Permalink to this headline">¶</a></h1>
 <p>In this section I want to break down the typical caproto server code into pieces. Press this link if you want to jump directly to <a class="reference external" href="#final-code">the final code</a></p>
@@ -212,7 +212,7 @@ I am not a developer of the caproto library, I am a user. Here I describe my vis
 <span class="k">async</span> <span class="k">def</span> <span class="nf">val</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
 </pre></div>
 </div>
-<p>The decorator <a class="reference external" href="mailto:'&#37;&#52;&#48;val&#46;getter">‘<span>&#64;</span>val<span>&#46;</span>getter</a>’ shows that the following function will be executed when a ‘get’ or ‘read’ request arrives for the ‘val’ PV.</p>
+<p>The decorator <a class="reference external" href="mailto:'&#37;&#52;&#48;val&#46;getter">‘<span>&#64;</span>val<span>&#46;</span>getter</a>’ indicates that the following function will be executed when a ‘get’ or ‘read’ request arrives for the ‘val’ PV.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@val</span><span class="o">.</span><span class="n">getter</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">val</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
 </pre></div>
