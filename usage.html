@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Principle of design and operation of CA server &mdash; caproto sandbox 0.0.0.post38+g3ebd79d documentation</title>
+  <title>Principle of design and operation of CA server &mdash; caproto sandbox 0.0.0.post39+g6d522c3 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.0.0.post38+g3ebd79d
+                0.0.0.post39+g6d522c3
               </div>
             
           
@@ -220,7 +220,7 @@ I am not a developer of the caproto library, I am a user. Here I describe my vis
 </div>
 <div class="section" id="final-code">
 <h2>Final code<a class="headerlink" href="#final-code" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
 <span class="kn">from</span> <span class="nn">caproto.server</span> <span class="kn">import</span> <span class="n">pvproperty</span><span class="p">,</span> <span class="n">PVGroup</span>
 
 <span class="k">class</span> <span class="nc">SimpleIOC</span><span class="p">(</span><span class="n">PVGroup</span><span class="p">):</span>
@@ -241,7 +241,7 @@ I am not a developer of the caproto library, I am a user. Here I describe my vis
     <span class="nd">@running</span><span class="o">.</span><span class="n">startup</span>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">running</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">async_lib</span><span class="p">):</span>
         <span class="s1">&#39;Periodically update the value&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">running</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">running</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">put_queue</span> <span class="o">=</span> <span class="n">async_lib</span><span class="o">.</span><span class="n">ThreadsafeQueue</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">get_queue</span> <span class="o">=</span> <span class="n">async_lib</span><span class="o">.</span><span class="n">ThreadsafeQueue</span><span class="p">()</span>
         <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
@@ -266,16 +266,18 @@ I am not a developer of the caproto library, I am a user. Here I describe my vis
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        called when the a new value is readby a client</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Server: &#39;rbv&#39; Got &#39;get&#39; request from outside:&quot;&quot;)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Server: &#39;rbv&#39; Got &#39;get&#39; request from outside:&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;responding to the get request...&#39;</span><span class="p">)</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">caproto.server</span> <span class="kn">import</span> <span class="n">ioc_arg_parser</span><span class="p">,</span> <span class="n">run</span>
     <span class="n">ioc_options</span><span class="p">,</span> <span class="n">run_options</span> <span class="o">=</span> <span class="n">ioc_arg_parser</span><span class="p">(</span>
-        <span class="n">default_prefix</span><span class="o">=</span><span class="s1">&#39;simple:&#39;</span><span class="p">,</span>
-        <span class="n">desc</span><span class="o">=</span><span class="n">dedent</span><span class="p">(</span><span class="n">SimpleIOC</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">))</span>
-    <span class="n">ioc</span> <span class="o">=</span> <span class="n">SimpleIOC</span><span class="p">(</span><span class="o">**</span><span class="n">ioc_options</span><span class="p">)</span>
-    <span class="n">run</span><span class="p">(</span><span class="n">ioc</span><span class="o">.</span><span class="n">pvdb</span><span class="p">,</span> <span class="o">**</span><span class="n">run_options</span><span class="p">)</span>
+        <span class="n">default_prefix</span><span class="o">=</span><span class="s1">&#39;simple.&#39;</span><span class="p">,</span>
+        <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;description&#39;</span><span class="p">)</span>
+    <span class="n">io</span>  <span class="o">=</span> <span class="n">SimpleIOC</span><span class="p">(</span><span class="o">**</span><span class="n">ioc_options</span><span class="p">)</span>
+
+    <span class="c1">#start async caproto server IO</span>
+    <span class="n">run</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">pvdb</span><span class="p">,</span> <span class="o">**</span><span class="n">run_options</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
