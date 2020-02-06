@@ -1,5 +1,5 @@
 Disclaimer:
-I am not a developer of the caproto library, I am a user. Here I describe my vision and understanding of the structure of caproto server from a user point of view.
+I am not a developer of the caproto library, I am a user. Here I describe my vision and understanding of the structure of caproto server from a user point of view. I am also hoping to provide some organization solutions. 
 
 **************************************************
 Principle of design and operation of CA server
@@ -61,7 +61,7 @@ The rest of the code defines what function will be executed when put(write) and 
       @val.putter
       async def val(self, instance, value):
 
-The decorator '@val.getter' shows that the following function will be executed when a 'get' or 'read' request arrives for the 'val' PV.
+The decorator '@val.getter' indicates that the following function will be executed when a 'get' or 'read' request arrives for the 'val' PV.
 
 .. code-block:: python
 
