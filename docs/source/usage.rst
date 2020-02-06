@@ -43,6 +43,14 @@ Next we need to define asynchronous (async) queue that are used to safely pass c
       self.put_queue = async_lib.ThreadsafeQueue()
       self.get_queue = async_lib.ThreadsafeQueue()
 
+The important part of the caproto server design is the following while loop. This loop is defined in the @running.startup function
+
+.. code-block:: python
+
+  while True:
+              entry = await self.put_queue.async_get()
+
+This line will asynchronously wait for a new entry in the put_queue.
 
 Part 3: Putters and Getters
 ===============================
