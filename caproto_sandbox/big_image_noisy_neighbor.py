@@ -11,7 +11,7 @@ image_shape = (3960, 3960)
 class IOInterruptIOC(PVGroup):
     t1 = pvproperty(value=2.0)
     image = pvproperty(
-        value=np.random.randint(0, 255, image_shape, dtype = 'uint8').flatten(), dtype=int
+        value=np.random.randint(0, 255, image_shape, dtype = 'uint8').flatten(), dtype=bytes
     )
 
     @t1.startup
