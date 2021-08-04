@@ -11,6 +11,7 @@ image_shape = (240,640, 3)
 class softIOC(PVGroup):
     arr = np.zeros(image_shape).flatten()
     t1 = pvproperty(value=1.0)
+    dt = pvproperty(value=1.0, precision = 3)
     image = pvproperty(value=arr, dtype = int, max_length = image_shape[0]*image_shape[1]*image_shape[2])
 
     x = [0]
@@ -22,12 +23,17 @@ class softIOC(PVGroup):
     async def t1(self, instance, async_lib):
         # Loop and grab items from the queue one at a time
         while True:
+
+            await self.t1.write(time.monotonic())
+            t1 = time.time()
+            figure = self.chart(np.asarray(self.x),np.asarray(self.y1),np.asarray(self.y2))
+            img = self.figure_to_array(figure).flatten()
+            t2 = time.time()
             self.x.append(self.x[-1]+1)
             self.y1.append(np.random.randint(255))
-            self.y2.append(np.random.randint(255))
-            await self.t1.write(time.monotonic())
-            img = self.chart(np.asarray(self.x),np.asarray(self.y1),np.asarray(self.y2)).flatten()
+            self.y2.append((t2-t1))
             await self.image.write(value = img)
+            await self.dt.write(value = (t2-t1))
             await async_lib.library.sleep(.1)
 
     def chart(self, x,y1, y2):
@@ -67,12 +73,18 @@ class softIOC(PVGroup):
         axes2.grid(True)
 
         figure.tight_layout()
-        figure_buf = io.BytesIO()
+        return figure
+
+    def figure_to_array(self, figure):
+        from io import BytesIO
+        from PIL.Image import open
+        from numpy import asarray
+        figure_buf = BytesIO()
         figure.savefig(figure_buf, format='jpg')
         figure_buf.seek(0)
-        import PIL
-        image = np.asarray(PIL.Image.open(figure_buf))
+        image = asarray(open(figure_buf))
         return image
+
 
 
 if __name__ == "__main__":

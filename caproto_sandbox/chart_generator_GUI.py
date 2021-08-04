@@ -44,20 +44,27 @@ class PanelTemplate(wx.Frame):
             main_sizer = wx.BoxSizer(wx.VERTICAL)
             topSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-            image_sizer = wx.StaticBoxSizer(orient = wx.VERTICAL, parent = self.panel, label = 'Microscope Camera')
+            image_sizer = wx.StaticBoxSizer(orient = wx.VERTICAL, parent = self.panel, label = 'Box Sizer Label')
             self.sizers['image_mean'] = wx.BoxSizer(wx.HORIZONTAL)
-            self.labels['image_mean']  = wx.StaticText(self.panel, label= 'image mean', style = wx.ALIGN_CENTER)
+            self.labels['image_mean']  = wx.StaticText(self.panel, label= 'Field 1 label', style = wx.ALIGN_CENTER)
             self.fields['image_mean']  = epics.wx.PVText(self.panel, pv='chart:t1',minor_alarm = wx.Colour(5, 6, 7),auto_units = True)
             self.sizers['image_mean'] .Add(self.labels['image_mean']  , 0)
             self.sizers['image_mean'] .Add(self.fields['image_mean']  , 0)
 
+            self.sizers['time_to_chart'] = wx.BoxSizer(wx.HORIZONTAL)
+            self.labels['time_to_chart']  = wx.StaticText(self.panel, label= 'time to chart', style = wx.ALIGN_CENTER)
+            self.fields['time_to_chart']  = epics.wx.PVText(self.panel, pv='chart:dt',minor_alarm = wx.Colour(5, 6, 7),auto_units = True)
+            self.sizers['time_to_chart'] .Add(self.labels['time_to_chart']  , 0)
+            self.sizers['time_to_chart'] .Add(self.fields['time_to_chart']  , 0)
+
             self.sizers['image'] = wx.BoxSizer(wx.VERTICAL)
-            self.labels['image']  = wx.StaticText(self.panel, label= 'Microscope Camera', style = wx.ALIGN_CENTER)
+            self.labels['image']  = wx.StaticText(self.panel, label= 'Field 2 label', style = wx.ALIGN_CENTER)
             self.fields['image']  = PVImage(self.panel, pv='chart:image', im_size = (640,240))
             self.sizers['image'] .Add(self.labels['image']  , 0)
             self.sizers['image'] .Add(self.fields['image']  , 0)
 
             image_sizer.Add(self.sizers['image_mean'] ,0)
+            image_sizer.Add(self.sizers['time_to_chart'] ,0)
             image_sizer.Add(self.sizers['image'] ,0)
 
             topSizer.Add(image_sizer,0)

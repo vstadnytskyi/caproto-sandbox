@@ -9,7 +9,6 @@ sphinx
 ipython
 matplotlib
 ubcs_auxiliary
-EPICS_CA
 numpydoc
 sphinx-copybutton
 sphinx_rtd_theme
