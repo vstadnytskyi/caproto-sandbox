@@ -3,7 +3,6 @@
 #
 #Beamline Configuration Server. Primarly used to service the Beamline configuration panel and provide flexibility in communication with 14IDB motors.
 
-from EPICS_CA.CAServer import casput
 #Configuration Modes
 #!/usr/bin/env python3
 
