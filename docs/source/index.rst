@@ -13,5 +13,6 @@ caproto sandbox Documentation
    usage
    example_1
    example_worker_thread_client
+   example_charting_IOC
    release-history
    min_versions

@@ -13,7 +13,7 @@ __version__ = "0.0.0" #initial
 
 class PanelTemplate(wx.Frame):
 
-        title = "GUI Panel Template"
+        title = "GUI Chart"
 
 
         def __init__(self):
@@ -47,13 +47,13 @@ class PanelTemplate(wx.Frame):
             image_sizer = wx.StaticBoxSizer(orient = wx.VERTICAL, parent = self.panel, label = 'Microscope Camera')
             self.sizers['image_mean'] = wx.BoxSizer(wx.HORIZONTAL)
             self.labels['image_mean']  = wx.StaticText(self.panel, label= 'image mean', style = wx.ALIGN_CENTER)
-            self.fields['image_mean']  = epics.wx.PVText(self.panel, pv='TEST.image_mean',minor_alarm = wx.Colour(5, 6, 7),auto_units = True)
+            self.fields['image_mean']  = epics.wx.PVText(self.panel, pv='chart:t1',minor_alarm = wx.Colour(5, 6, 7),auto_units = True)
             self.sizers['image_mean'] .Add(self.labels['image_mean']  , 0)
             self.sizers['image_mean'] .Add(self.fields['image_mean']  , 0)
 
             self.sizers['image'] = wx.BoxSizer(wx.VERTICAL)
             self.labels['image']  = wx.StaticText(self.panel, label= 'Microscope Camera', style = wx.ALIGN_CENTER)
-            self.fields['image']  = PVImage(self.panel, pv='TEST.image', im_size = (100,100))
+            self.fields['image']  = PVImage(self.panel, pv='chart:image', im_size = (640,240))
             self.sizers['image'] .Add(self.labels['image']  , 0)
             self.sizers['image'] .Add(self.fields['image']  , 0)
 
