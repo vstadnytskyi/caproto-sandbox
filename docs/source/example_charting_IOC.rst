@@ -1,6 +1,6 @@
-====================
+======================
 Example "Charting IOC"
-====================
+======================
 
 This is an example of a soft IOC that takes some data and charts it with matplotlib. The figure is available as a bitmap image that can be broadcasted by Channel Access. The chart_generator_GUI has a field which is a simple bitmap of a given size. This is a way to offload the plotting burden to a softIOC and simplify GUI. The GUI will just have a PVImage object from the modified pyepics library.
 

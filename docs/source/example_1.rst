@@ -54,21 +54,15 @@ You will get a panel that looks like this;
   :width: 300px
 
 
-Mock motor record
+Mock motor record1
 ==================
 Simple mock motor record with three PVs: VAL, RBV and running.
 
-.. autoclass:: caproto_sandbox.example_1_motor.Server
-  :members:
 
-Server
+Server1
 ==================
 There are three python classes in the file. The "Server" is a caproto PVGroup class and Choices, Motors are client classes that provide simple interface.
 
-.. automodule:: caproto_sandbox.example_1_server
-  :members:
-  :undoc-members:
-  :show-inheritance:
 
 
 The Motors class has two PVs hard-coded: BEAMLINE:motor.RBV and BEAMLINE:motor.VAL. it subscribes to PVs and act if new values is posted. The
