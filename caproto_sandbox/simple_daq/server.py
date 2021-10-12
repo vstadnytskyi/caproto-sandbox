@@ -9,7 +9,7 @@ from textwrap import dedent
 from pdb import pm
 
 from numpy import random, array, zeros, ndarray, nan, isnan
-from time import time,sleep
+from time import time,sleep, ctime
 
 
 
@@ -28,11 +28,11 @@ class Server(PVGroup):
 
     """
 
-    CPU = pvproperty(value=0.0, read_only = True, dtype = float, precision = 1)
-    MEMORY = pvproperty(value=0.0, read_only = True, dtype = float, precision = 1)
-    BATTERY = pvproperty(value=0.0, read_only = True, dtype = float, precision = 1)
-    TIME = pvproperty(value=time(), read_only = True, dtype = float, precision = 3)
-    dt = pvproperty(value=1.0)
+    CPU = pvproperty(value=0.0, read_only = True, dtype = float, precision = 1, units = '%')
+    MEMORY = pvproperty(value=0.0, read_only = True, dtype = float, precision = 1, units = 'GB')
+    BATTERY = pvproperty(value=0.0, read_only = True, dtype = float, precision = 1, units = '%')
+    TIME = pvproperty(value='time unknown', read_only = True, dtype = str)
+    dt = pvproperty(value=1.0, precision = 3, units = 's')
     LIST = pvproperty(value=[0.0,0.0,0.0,0.0])
 
     @CPU.startup
@@ -40,8 +40,8 @@ class Server(PVGroup):
         # This method will be called when the server starts up.
         self.io_pull_queue = async_lib.ThreadsafeQueue()
         self.io_push_queue = async_lib.ThreadsafeQueue()
-        self.daq.io_push_queue = self.io_push_queue
-        self.daq.io_pull_queue = self.io_pull_queue
+        self.device.io_push_queue = self.io_push_queue
+        self.device.io_pull_queue = self.io_pull_queue
 
         # Loop and grab items from the response queue one at a time
         while True:
@@ -50,15 +50,22 @@ class Server(PVGroup):
             # along the way
             for key in list(io_dict.keys()):
                 if key == 'TIME':
-                    await self.TIME.write(io_dict[key])
+                    await self.TIME.write(ctime(io_dict[key]))
                 elif key == 'CPU':
                     await self.CPU.write(io_dict[key])
                 elif key == 'MEMORY':
-                    await self.MEMORY.write(io_dict[key])
+                    await self.MEMORY.write(io_dict[key]/1024/1024/1024)
                 elif key == 'BATTERY':
                     await self.BATTERY.write(io_dict[key])
                 elif key == 'LIST':
                     await self.LIST.write(io_dict[key])
+                elif key == 'dt':
+                    await self.dt.write(io_dict[key])
+    @dt.putter
+    async def dt(self, instance, value):
+        print('Received update for the {}, sending new value {}'.format('dt',value))
+        self.device.dt = value
+        return value
 
 
 
@@ -68,10 +75,11 @@ if __name__ == '__main__':
 
 
     driver = Driver()
-    device = Device()
+    device = Device(driver = driver)
     device.start()
     ioc_options, run_options = ioc_arg_parser(
-        default_prefix='simple_dl:',
+        default_prefix='simple_daq:',
         desc=dedent(Server.__doc__))
-    ioc = Server(**ioc_options)
-    run(ioc.pvdb, **run_options)
+    server = Server(**ioc_options)
+    server.device = device
+    run(server.pvdb, **run_options)

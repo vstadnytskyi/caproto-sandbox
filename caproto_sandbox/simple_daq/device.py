@@ -16,8 +16,8 @@ from circular_buffer_numpy import circular_buffer
 
 class Device(object):
     def __init__(self, driver):
-        from circular_buffer_numpy import circular_buffer
-        self.buffer = circular_buffer.CircularBuffer(shape = (1000,4))
+        from circular_buffer_numpy.circular_buffer import CircularBuffer
+        self.buffer = CircularBuffer(shape = (1000,4))
         self.dt = 1
         self.running = True
         self.header = ['time','cpu','memory','battery']
