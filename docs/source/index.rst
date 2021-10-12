@@ -11,9 +11,6 @@ caproto sandbox Documentation
 
    installation
    usage
-   example_1
-   example_worker_thread_client
-   example_charting_IOC
    example_simple_daq
    release-history
    min_versions

@@ -37,7 +37,9 @@ class Server(PVGroup):
 
     @CPU.startup
     async def CPU(self, instance, async_lib):
-        # This method will be called when the server starts up.
+        """
+        This method will be called when the server starts up and first initialization of PV with name CPU.
+        """
         self.io_pull_queue = async_lib.ThreadsafeQueue()
         self.io_push_queue = async_lib.ThreadsafeQueue()
         self.device.io_push_queue = self.io_push_queue
@@ -63,6 +65,9 @@ class Server(PVGroup):
                     await self.dt.write(io_dict[key])
     @dt.putter
     async def dt(self, instance, value):
+        """
+        this function is called everytime the value of dt is changed in the server's database, whether it is changed externally or internally.
+        """
         print('Received update for the {}, sending new value {}'.format('dt',value))
         self.device.dt = value
         return value
@@ -81,5 +86,6 @@ if __name__ == '__main__':
         default_prefix='simple_daq:',
         desc=dedent(Server.__doc__))
     server = Server(**ioc_options)
+    # pass the device instance into the server instance for bidirectional communication
     server.device = device
     run(server.pvdb, **run_options)
