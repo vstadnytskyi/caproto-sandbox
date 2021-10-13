@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>caproto_sandbox.simple_daq.driver &mdash; caproto sandbox 0.0.0.post64+gb78616f documentation</title>
+  <title>caproto_sandbox.simple_daq.client &mdash; caproto sandbox 0.0.0.post64+gb78616f documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/plot_directive.css" type="text/css" />
@@ -64,7 +64,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>caproto_sandbox.simple_daq.driver</li>
+      <li>caproto_sandbox.simple_daq.client</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -73,40 +73,16 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for caproto_sandbox.simple_daq.driver</h1><div class="highlight"><pre>
+  <h1>Source code for caproto_sandbox.simple_daq.client</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python3</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">simple data acquisisioin unit driver. This example collects reading from the onboard computer sensors.</span>
-<span class="sd">&quot;&quot;&quot;</span>
 
-
-<div class="viewcode-block" id="Driver"><a class="viewcode-back" href="../../../example_simple_daq.html#caproto_sandbox.simple_daq.driver.Driver">[docs]</a><span class="k">class</span> <span class="nc">Driver</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../example_simple_daq.html#caproto_sandbox.simple_daq.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        initialization of the instance</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">zeros</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">arr</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+        <span class="kn">from</span> <span class="nn">caproto.threading.client</span> <span class="kn">import</span> <span class="n">Context</span>
+        <span class="n">ctx</span> <span class="o">=</span> <span class="n">Context</span><span class="p">()</span>
+        <span class="n">dt</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">cpu</span><span class="p">,</span><span class="n">memory</span><span class="p">,</span><span class="n">battery</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">get_pvs</span><span class="p">(</span><span class="s1">&#39;simple_daq:dt&#39;</span><span class="p">,</span><span class="s1">&#39;simple_daq:TIME&#39;</span><span class="p">,</span><span class="s1">&#39;simple_daq:CPU&#39;</span><span class="p">,</span><span class="s1">&#39;simple_daq:MEMORY&#39;</span><span class="p">,</span><span class="s1">&#39;simple_daq:BATTERY&#39;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Driver.read"><a class="viewcode-back" href="../../../example_simple_daq.html#caproto_sandbox.simple_daq.driver.Driver.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        reads onboard sensors and returns an array with a time-stamp.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">import</span> <span class="nn">psutil</span>
-        <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
-        <span class="n">memory</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">virtual_memory</span><span class="p">()</span><span class="o">.</span><span class="n">available</span>
-        <span class="n">cpu</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">cpu_percent</span><span class="p">()</span>
-        <span class="n">battery</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">sensors_battery</span><span class="p">()</span><span class="o">.</span><span class="n">percent</span>
-        <span class="n">arr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arr</span>
-        <span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
-        <span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">cpu</span>
-        <span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">memory</span>
-        <span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">battery</span>
-        <span class="k">return</span> <span class="n">arr</span></div></div>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">driver</span> <span class="o">=</span> <span class="n">Driver</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">cpu</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">battery</span>  <span class="o">=</span> <span class="n">dt</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">cpu</span><span class="p">,</span><span class="n">memory</span><span class="p">,</span><span class="n">battery</span></div>
 </pre></div>
 
            </div>

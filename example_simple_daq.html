@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Example Simple Data Acquisition Unit &mdash; caproto sandbox 0.0.0.post59+g10f4358 documentation</title>
+  <title>Example Simple Data Acquisition Unit &mdash; caproto sandbox 0.0.0.post64+gb78616f documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
@@ -34,7 +34,7 @@
             <a href="index.html" class="icon icon-home"> caproto sandbox
           </a>
               <div class="version">
-                0.0.0.post59+g10f4358
+                0.0.0.post64+gb78616f
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -48,9 +48,12 @@
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Principle of design and operation of CA server</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Example Simple Data Acquisition Unit</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#example-of-usage">Example of usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#driver">Driver</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#device">Device</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#server-ca-ioc">Server (CA IOC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#graphical-user-interface">Graphical User Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#client">Client</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="release-history.html">Release History</a></li>
@@ -83,17 +86,44 @@
              
   <section id="example-simple-data-acquisition-unit">
 <h1>Example Simple Data Acquisition Unit<a class="headerlink" href="#example-simple-data-acquisition-unit" title="Permalink to this headline">¶</a></h1>
-<p>This is an example of a simple data acquisition unit. The data comes from onboard sensors like: CPU utilization, battery capacity and memory utilization.</p>
-<p>The example is purposely divided into several different files to explicitly show the modularity of this example. The files are: driver, device, server, gui, and client.</p>
-<p>The <em>driver</em> file contains one Driver class. The instantiation of the class connects to a data acquisition unit and provides a simple read() function to read from sensors. The result is returned as a numpy array, in this case 1x4 with entries sorted as following: time, CPU utilization in %, memory utilization in GB, battery capacity in %.</p>
-<p>The next level in the hierarchy is device level. The device code consists of one Device class. The initialization of the device instance creates circular buffer where the data from the data acquisition unit will be stored. This example does not take advantage of the circular buffer explicitly, but it can be used to expand the example in future and add more fields like mean CPU usage, etc.</p>
-<p>The server code puts entire example on the network using caproto library. The server level has six Process Variables(PVs):  TIME, CPU, MEMORY, BATTERY, dt, LIST
+<p>This is an example of a simple data acquisition unit. The data comes from your computer onboard sensors e.g.: CPU utilization, battery capacity and memory utilization.</p>
+<p>The example is purposely divided into several different files to explicitly show the modularity and hierarchy. The files are: <strong>driver</strong>, <strong>device</strong>, <strong>server</strong>, <strong>gui</strong>, and <strong>client</strong>.</p>
+<figure class="align-center">
+<img alt="_images/simple_device.jpeg" src="_images/simple_device.jpeg" />
+</figure>
+<p>The <strong>driver</strong> file contains one Driver class. The instantiation of the class connects to a data acquisition unit(this case on-board sensors) and through  a simple read() function provides higher level command to retrieve data from sensors. The result is returned as a numpy array, in this case 1x4 with entries sorted as following: time, CPU utilization in %, memory utilization in GB, battery capacity in %.</p>
+<p>The next level in the hierarchy is <strong>device</strong> level. The device code consists of one Device class. The initialization of the device instance creates circular buffer where the data from the data acquisition unit will be stored. This example does not take advantage of the circular buffer explicitly, but it can be used to expand the example in future and add more fields like mean CPU usage, etc. The purpose of the device class is to collect data on a clock and put it in circular buffer.</p>
+<p>The <strong>server</strong> code puts entire example on the network using caproto library. The server level has six Process Variables(PVs):  TIME, CPU, MEMORY, BATTERY, dt, LIST
 - TIME - time of last read (UnixTime)
 - CPU - CPU utilization value during last read
 - MEMORY - MEMORY utilization value during last read
 - BATTERY - BATTERY utilization value during last read
 - dt - update frequency in seconds
 - LIST - combined PV that transmits all data acquired during last data acquisition</p>
+<p>The <strong>GUI</strong> code uses wxPython in combination with PyEpics. The GUI code is heavily utilizing wxPython BoxSizers to make the code modular and hierarchical.</p>
+<p>The <strong>client</strong> code is a simple example of line based communications. This example can be incorporate into a higher level IOCs that can talk to the lower level IOCs without GUI interface.</p>
+<section id="example-of-usage">
+<h2>Example of usage<a class="headerlink" href="#example-of-usage" title="Permalink to this headline">¶</a></h2>
+<p>You would need to open multiple terminal tabs in one window. But first start terminal and change directory to the location of the library.</p>
+<p>to test the driver code:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">caproto_sandbox.simple_daq.driver</span> <span class="kn">import</span> <span class="n">Driver</span>
+<span class="n">driver</span> <span class="o">=</span> <span class="n">Driver</span><span class="p">()</span>
+<span class="n">driver</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+<span class="o">..</span> <span class="n">code</span><span class="o">-</span><span class="n">block</span><span class="p">::</span> <span class="n">python</span>
+
+  <span class="kn">from</span> <span class="nn">caproto_sandbox.simple_daq.device</span> <span class="kn">import</span> <span class="n">Device</span>
+  <span class="n">driver</span> <span class="o">=</span> <span class="n">Driver</span><span class="p">()</span>
+  <span class="n">device</span> <span class="o">=</span> <span class="n">Device</span><span class="p">(</span><span class="n">driver</span> <span class="o">=</span> <span class="n">driver</span><span class="p">)</span>
+  <span class="n">device</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+  <span class="n">device</span><span class="o">.</span><span class="n">buffer</span><span class="o">.</span><span class="n">pointer</span>
+  <span class="o">-</span><span class="mi">1</span>
+  <span class="n">device</span><span class="o">.</span><span class="n">run_once</span><span class="p">()</span>
+  <span class="n">device</span><span class="o">.</span><span class="n">buffer</span><span class="o">.</span><span class="n">pointer</span>
+  <span class="mi">0</span>
+</pre></div>
+</div>
+</section>
 <section id="driver">
 <h2>Driver<a class="headerlink" href="#driver" title="Permalink to this headline">¶</a></h2>
 <p>Simple data acquisition driver example.</p>
@@ -193,6 +223,20 @@
 <span class="sig-name descname"><span class="pre">dt</span></span><a class="headerlink" href="#caproto_sandbox.simple_daq.server.Server.dt" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+</dd></dl>
+
+</section>
+<section id="graphical-user-interface">
+<h2>Graphical User Interface<a class="headerlink" href="#graphical-user-interface" title="Permalink to this headline">¶</a></h2>
+<p>Graphical user interface module written in PyEpics and wxPython</p>
+</section>
+<section id="client">
+<h2>Client<a class="headerlink" href="#client" title="Permalink to this headline">¶</a></h2>
+<p>The line base client written in caproto</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="caproto_sandbox.simple_daq.client.Client">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">caproto_sandbox.simple_daq.client.</span></span><span class="sig-name descname"><span class="pre">Client</span></span><a class="reference internal" href="_modules/caproto_sandbox/simple_daq/client.html#Client"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#caproto_sandbox.simple_daq.client.Client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 </dd></dl>
 
 </section>
