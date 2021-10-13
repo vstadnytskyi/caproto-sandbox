@@ -22,7 +22,7 @@ class Device(object):
         from circular_buffer_numpy.circular_buffer import CircularBuffer
         self.buffer = CircularBuffer(shape = (1000,4))
         self.dt = 1
-        self.running = True
+        self.running = False
         self.header = ['time','cpu','memory','battery']
         self.io_push_queue = None
         self.io_put_queue = None
@@ -33,6 +33,7 @@ class Device(object):
         """
         the single execution of a code that later is looped in while running=true loop
         """
+        #
         arr = self.driver.read()
         self.buffer.append(arr)
 

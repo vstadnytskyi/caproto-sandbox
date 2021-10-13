@@ -4,12 +4,11 @@ Simple IOC based on caproto library.
 It has
 """
 from caproto.server import pvproperty, PVGroup, ioc_arg_parser, run
-import caproto
 from textwrap import dedent
 from pdb import pm
 
 from numpy import random, array, zeros, ndarray, nan, isnan
-from time import time,sleep, ctime
+from time import time, sleep, ctime
 
 
 
@@ -29,10 +28,15 @@ class Server(PVGroup):
     """
 
     CPU = pvproperty(value=0.0, read_only = True, dtype = float, precision = 1, units = '%')
+
     MEMORY = pvproperty(value=0.0, read_only = True, dtype = float, precision = 1, units = 'GB')
+
     BATTERY = pvproperty(value=0.0, read_only = True, dtype = float, precision = 1, units = '%')
+
     TIME = pvproperty(value='time unknown', read_only = True, dtype = str)
+
     dt = pvproperty(value=1.0, precision = 3, units = 's')
+
     LIST = pvproperty(value=[0.0,0.0,0.0,0.0])
 
     @CPU.startup
@@ -72,7 +76,7 @@ class Server(PVGroup):
         self.device.dt = value
         return value
 
-def run_server():
+def run_server(name = 'simple_daq'):
     from  caproto_sandbox.simple_daq.driver import Driver
     from  caproto_sandbox.simple_daq.device import Device
     from  caproto_sandbox.simple_daq.server import Server
@@ -80,11 +84,13 @@ def run_server():
     import sys
     print(sys.argv)
     sys.argv.append('--list-pvs')
+
     driver = Driver()
     device = Device(driver = driver)
     device.start()
+
     ioc_options, run_options = ioc_arg_parser(
-        default_prefix='simple_daq:',
+        default_prefix=f'{name}:',
         desc=dedent(Server.__doc__))
     server = Server(**ioc_options)
     # pass the device instance into the server instance for bidirectional communication
