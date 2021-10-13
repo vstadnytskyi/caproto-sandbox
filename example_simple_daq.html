@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Example Simple Data Acquisition Unit &mdash; caproto sandbox 0.0.0.post68+g4917359 documentation</title>
+  <title>Example Simple Data Acquisition Unit &mdash; caproto sandbox 0.0.0.post69+gc3f5696 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
@@ -34,7 +34,7 @@
             <a href="index.html" class="icon icon-home"> caproto sandbox
           </a>
               <div class="version">
-                0.0.0.post68+g4917359
+                0.0.0.post69+gc3f5696
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -178,37 +178,44 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="caproto_sandbox.simple_daq.device.Device.get_dt">
 <span class="sig-name descname"><span class="pre">get_dt</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/caproto_sandbox/simple_daq/device.html#Device.get_dt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#caproto_sandbox.simple_daq.device.Device.get_dt" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>wrapper to get dT</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="caproto_sandbox.simple_daq.device.Device.io_push">
 <span class="sig-name descname"><span class="pre">io_push</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">io_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/caproto_sandbox/simple_daq/device.html#Device.io_push"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#caproto_sandbox.simple_daq.device.Device.io_push" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>wrapper to push the updates into CA server for further publishing on the network.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="caproto_sandbox.simple_daq.device.Device.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/caproto_sandbox/simple_daq/device.html#Device.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#caproto_sandbox.simple_daq.device.Device.run" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>while running = True loop that executes run_once() in a loop on a timer.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="caproto_sandbox.simple_daq.device.Device.run_once">
 <span class="sig-name descname"><span class="pre">run_once</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/caproto_sandbox/simple_daq/device.html#Device.run_once"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#caproto_sandbox.simple_daq.device.Device.run_once" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>the single execution of a code that later is looped in while running=true loop</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="caproto_sandbox.simple_daq.device.Device.set_dt">
 <span class="sig-name descname"><span class="pre">set_dt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/caproto_sandbox/simple_daq/device.html#Device.set_dt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#caproto_sandbox.simple_daq.device.Device.set_dt" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>wrapper to set dT</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="caproto_sandbox.simple_daq.device.Device.start">
 <span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/caproto_sandbox/simple_daq/device.html#Device.start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#caproto_sandbox.simple_daq.device.Device.start" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>start the while running=True loop(function run()) in a separate thread.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="caproto_sandbox.simple_daq.device.Device.stop">
 <span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/caproto_sandbox/simple_daq/device.html#Device.stop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#caproto_sandbox.simple_daq.device.Device.stop" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>stop the while running=True loop(function run()) in a separate thread.</p>
+</dd></dl>
 
 </dd></dl>
 
