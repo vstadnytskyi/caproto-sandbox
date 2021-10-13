@@ -5,3 +5,4 @@ numpy
 pyepics
 circular_buffer_numpy
 ubcs_auxiliary
+wxpython
