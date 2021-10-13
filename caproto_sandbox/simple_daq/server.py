@@ -72,7 +72,22 @@ class Server(PVGroup):
         self.device.dt = value
         return value
 
+def run_server():
+    from  caproto_sandbox.simple_daq.driver import Driver
+    from  caproto_sandbox.simple_daq.device import Device
+    from  caproto_sandbox.simple_daq.server import Server
 
+
+    driver = Driver()
+    device = Device(driver = driver)
+    device.start()
+    ioc_options, run_options = ioc_arg_parser(
+        default_prefix='simple_daq:',
+        desc=dedent(Server.__doc__))
+    server = Server(**ioc_options)
+    # pass the device instance into the server instance for bidirectional communication
+    server.device = device
+    run(server.pvdb, **run_options)
 
 if __name__ == '__main__':
     from  caproto_sandbox.simple_daq.driver import Driver

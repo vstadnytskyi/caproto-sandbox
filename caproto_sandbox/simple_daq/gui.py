@@ -97,6 +97,16 @@ class Window(wx.Frame):
             self.panel.Fit()
             self.Fit()
 
+def run_gui():
+    from pdb import pm
+    import logging
+    from tempfile import gettempdir
+
+    app = wx.App(redirect=False)
+    panel = Window()
+
+    app.MainLoop()
+
 if __name__ == '__main__':
     from pdb import pm
     import logging
