@@ -69,7 +69,7 @@ In the second terminal tab,
     > from caproto_sandbox.simple_daq.gui import run_gui
     > run_gui()
 
-Below is the example of in-line terminal client.
+Below is the example of inline python shell client or what can be embedded into a higher level code.
 
  .. code-block:: python
 
