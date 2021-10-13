@@ -12,28 +12,28 @@ import wx
 
 __version__ = "0.0.0" #initial
 
-class PanelTemplate(wx.Frame):
+class Window(wx.Frame):
 
         title = "Simple DAQ GUI"
 
         def __init__(self):
             wx.Frame.__init__(self, None, wx.ID_ANY, title=self.title, style=wx.DEFAULT_FRAME_STYLE)
             self.panel=wx.Panel(self, -1, size = (300,75))
-            self.Bind(wx.EVT_CLOSE, self.OnQuit)
+            self.Bind(wx.EVT_CLOSE, self.on_quit)
 
-            self.initialize_GUI()
+            self.init()
             self.SetBackgroundColour(wx.Colour(255,255,255))
             self.Centre()
             self.Show()
 
-        def OnQuit(self,event):
+        def on_quit(self,event):
             """
             orderly exit of Panel if close button is pressed
             """
             self.Destroy()
             del self
 
-        def initialize_GUI(self):
+        def init(self):
             """
             """
             sizer = wx.GridBagSizer(hgap = 5, vgap = 5)
@@ -103,6 +103,6 @@ if __name__ == '__main__':
     from tempfile import gettempdir
 
     app = wx.App(redirect=False)
-    panel = PanelTemplate()
+    panel = Window()
 
     app.MainLoop()
