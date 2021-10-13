@@ -46,7 +46,7 @@ to test the driver code:
     device.driver.read()
     device.buffer.pointer
     -1
-    device.run_once()  
+    device.run_once()
     device.buffer.pointer
     0
 
@@ -81,10 +81,6 @@ Graphical User Interface
 ==========================
 Graphical user interface module written in PyEpics and wxPython
 
-.. autoclass:: caproto_sandbox.simple_daq.gui.Window
-  :members:
-  :undoc-members:
-  :show-inheritance:
 
 Client
 ==========================
