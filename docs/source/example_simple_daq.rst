@@ -48,18 +48,14 @@ Now with the client you can submit a command to a "request" PV and check respons
 
 
 
+Driver
+==================
+Simple data acquisition driver example.
+
+.. autoclass:: caproto_sandbox.device.Device
+  :members:
+
+
 Device
 ==================
-Simple mock motor record with three PVs: VAL, RBV and running.
-
-.. autoclass:: caproto_sandbox.worker_thread_device.Device
-  :members:
-
-Server
-==================
-There are three python classes in the file. The "Server" is a caproto PVGroup class.
-
-.. automodule:: caproto_sandbox.worker_thread_server.Server
-  :members:
-  :undoc-members:
-  :show-inheritance:
+Simple data acquisition device example.
