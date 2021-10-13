@@ -11,6 +11,7 @@ class Driver(object):
         """
         from numpy import zeros
         self.arr = zeros((1,4))
+        self.name = 'simple daq driver'
 
     def read(self):
         """
@@ -18,7 +19,7 @@ class Driver(object):
         """
         import psutil
         from time import time
-        memory = psutil.virtual_memory().available
+        memory = psutil.virtual_memory().used
         cpu = psutil.cpu_percent()
         battery = psutil.sensors_battery().percent
         arr = self.arr

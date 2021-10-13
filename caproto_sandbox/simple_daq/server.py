@@ -77,7 +77,9 @@ def run_server():
     from  caproto_sandbox.simple_daq.device import Device
     from  caproto_sandbox.simple_daq.server import Server
 
-
+    import sys
+    print(sys.argv)
+    sys.argv.append('--list-pvs')
     driver = Driver()
     device = Device(driver = driver)
     device.start()
@@ -87,12 +89,13 @@ def run_server():
     server = Server(**ioc_options)
     # pass the device instance into the server instance for bidirectional communication
     server.device = device
+
     run(server.pvdb, **run_options)
 
 if __name__ == '__main__':
     from  caproto_sandbox.simple_daq.driver import Driver
     from  caproto_sandbox.simple_daq.device import Device
-
+    import sys
 
     driver = Driver()
     device = Device(driver = driver)
@@ -103,4 +106,5 @@ if __name__ == '__main__':
     server = Server(**ioc_options)
     # pass the device instance into the server instance for bidirectional communication
     server.device = device
+    print(sys.argv)
     run(server.pvdb, **run_options)

@@ -27,6 +27,7 @@ class Device(object):
         self.io_push_queue = None
         self.io_put_queue = None
         self.driver = driver
+        self.threads = {}
 
     def run_once(self):
         """
@@ -62,7 +63,7 @@ class Device(object):
         start the while running=True loop(function run()) in a separate thread.
         """
         from ubcs_auxiliary.multithreading import new_thread
-        self.thread['running'] = new_thread(self.run)
+        self.threads['running'] = new_thread(self.run)
 
     def stop(self):
         """
