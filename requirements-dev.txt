@@ -12,7 +12,6 @@ numpy
 pyepics
 circular_buffer_numpy
 ubcs_auxiliary
-wxpython
 numpydoc
 sphinx-copybutton
 sphinx_rtd_theme
