@@ -16,6 +16,9 @@ from circular_buffer_numpy import circular_buffer
 
 class Device(object):
     def __init__(self, driver):
+        """
+        initialization of the instance and creation of all other instances and variables
+        """
         from circular_buffer_numpy.circular_buffer import CircularBuffer
         self.buffer = CircularBuffer(shape = (1000,4))
         self.dt = 1
@@ -26,9 +29,13 @@ class Device(object):
         self.driver = driver
 
     def run_once(self):
+        """
+        the single execution of a code that later is looped in while running=true loop
+        """
         arr = self.driver.read()
         self.buffer.append(arr)
 
+        #push to IO for publishing
         io_dict = {}
         io_dict['TIME'] = arr[0,0]
         io_dict['CPU'] = arr[0,1]
@@ -38,25 +45,46 @@ class Device(object):
         self.io_push(io_dict)
 
     def run(self):
-        from time import sleep
+        """
+        while running = True loop that executes run_once() in a loop on a timer.
+        """
+        from time import sleep, time
         self.running = True
         while self.running:
+            t1 = time()
             self.run_once()
-            sleep(self.dt)
+            t2 = time()
+            dt = t2-t1
+            sleep(self.dt-dt)
 
     def start(self):
+        """
+        start the while running=True loop(function run()) in a separate thread.
+        """
         from ubcs_auxiliary.multithreading import new_thread
-        new_thread(self.run)
+        self.thread['running'] = new_thread(self.run)
 
     def stop(self):
+        """
+        stop the while running=True loop(function run()) in a separate thread.
+        """
         self.running = False
 
     def set_dt(self,value):
+        """
+        wrapper to set dT
+        """
         self.dt = value
     def get_dt(self):
+        """
+        wrapper to get dT
+        """
         return self.dt
 
     def io_push(self,io_dict = None):
+        """
+        wrapper to push the updates into CA server for further publishing on the network.
+        """
         if self.io_push_queue is not None:
             self.io_push_queue.put(io_dict)
 
