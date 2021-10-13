@@ -19,43 +19,32 @@ The server code puts entire example on the network using caproto library. The se
 - LIST - combined PV that transmits all data acquired during last data acquisition
 
 
-.. code-block:: shell
-
-    run worker_thread_server.py
-
-You should see something similar to the following 5 lines:
-
-.. code-block:: shell
-
-  $ ipython3 caproto_sandbox/worker_thread_server.py
-  [I 18:20:17.919          server:  162] Asyncio server starting up...
-  [I 18:20:17.920          server:  175] Listening on 0.0.0.0:57804
-  [I 18:20:17.920          server:  261] Server startup complete.
-  * request method called at server startup
-
-Now with the client you can submit a command to a "request" PV and check response in the "response" PV
-
-.. code-block:: shell
-
-  In [1]: request.write(1)
-  Out[1]: WriteNotifyResponse(data_type=<ChannelType.DOUBLE: 6>, data_count=1, status=CAStatusCode(name='ECA_NORMAL', code=0, code_with_severi
-  ty=1, severity=<CASeverity.SUCCESS: 1>, success=1, defunct=False, description='Normal successful completion'), ioid=0)
-
-  In [2]: response.read()
-  Out[2]: ReadNotifyResponse(data=array([1.58086159e+09]), data_type=<ChannelType.DOUBLE: 6>, data_count=1, status=CAStatusCode(name='ECA_NORM
-  AL', code=0, code_with_severity=1, severity=<CASeverity.SUCCESS: 1>, success=1, defunct=False, description='Normal successful completion'), i
-  oid=1, metadata=None)
-
-
-
 Driver
 ==================
 Simple data acquisition driver example.
 
-.. autoclass:: caproto_sandbox.device.Device
+.. autoclass:: caproto_sandbox.simple_daq.driver.Driver
   :members:
+  :undoc-members:
+  :show-inheritance:
+
 
 
 Device
 ==================
 Simple data acquisition device example.
+
+.. autoclass:: caproto_sandbox.simple_daq.device.Device
+  :members:
+  :undoc-members:
+  :show-inheritance:
+
+
+Server (CA IOC)
+==================
+Simple data acquisition device example.
+
+.. autoclass:: caproto_sandbox.simple_daq.server.Server
+  :members:
+  :undoc-members:
+  :show-inheritance:
