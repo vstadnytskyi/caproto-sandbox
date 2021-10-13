@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Example Simple Data Acquisition Unit &mdash; caproto sandbox 0.0.0.post69+gc3f5696 documentation</title>
+  <title>Example of usage &mdash; caproto sandbox 0.0.0.post70+g476da33 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
@@ -34,7 +34,7 @@
             <a href="index.html" class="icon icon-home"> caproto sandbox
           </a>
               <div class="version">
-                0.0.0.post69+gc3f5696
+                0.0.0.post70+g476da33
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -47,15 +47,12 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Principle of design and operation of CA server</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Example Simple Data Acquisition Unit</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#example-of-usage">Example of usage</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#driver">Driver</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#device">Device</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#server-ca-ioc">Server (CA IOC)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#graphical-user-interface">Graphical User Interface</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#client">Client</a></li>
-</ul>
-</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Example of usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#driver">Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#device">Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#server-ca-ioc">Server (CA IOC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#graphical-user-interface">Graphical User Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#client">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="release-history.html">Release History</a></li>
 <li class="toctree-l1"><a class="reference internal" href="min_versions.html">Minimum Version of Python and NumPy</a></li>
 </ul>
@@ -74,7 +71,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Example Simple Data Acquisition Unit</li>
+      <li>Example of usage</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/example_simple_daq.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -84,26 +81,30 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="example-simple-data-acquisition-unit">
-<h1>Example Simple Data Acquisition Unit<a class="headerlink" href="#example-simple-data-acquisition-unit" title="Permalink to this headline">¶</a></h1>
-<p>This is an example of a simple data acquisition unit. The data comes from your computer onboard sensors e.g.: CPU utilization, battery capacity and memory utilization.</p>
-<p>The example is purposely divided into several different files to explicitly show the modularity and hierarchy. The files are: <strong>driver</strong>, <strong>device</strong>, <strong>server</strong>, <strong>gui</strong>, and <strong>client</strong>.</p>
+  <p>network=====================================
+Example Simple Data Acquisition Unit
+=====================================</p>
+<p>This is an example of a simple data acquisition unit that is put on network using caproto library. . The data comes from your computer onboard sensors e.g.: CPU utilization, battery capacity and memory utilization.</p>
+<p>The example is purposely divided into several different files to explicitly show the modularity and hierarchy. The files(modules) are: <strong>driver</strong>, <strong>device</strong>, <strong>server</strong>, <strong>gui</strong>, and <strong>client</strong>.</p>
 <figure class="align-center">
 <img alt="_images/simple_device.jpeg" src="_images/simple_device.jpeg" />
 </figure>
-<p>The <strong>driver</strong> file contains one Driver class. The instantiation of the class connects to a data acquisition unit(this case on-board sensors) and through  a simple read() function provides higher level command to retrieve data from sensors. The result is returned as a numpy array, in this case 1x4 with entries sorted as following: time, CPU utilization in %, memory utilization in GB, battery capacity in %.</p>
-<p>The next level in the hierarchy is <strong>device</strong> level. The device code consists of one Device class. The initialization of the device instance creates circular buffer where the data from the data acquisition unit will be stored. This example does not take advantage of the circular buffer explicitly, but it can be used to expand the example in future and add more fields like mean CPU usage, etc. The purpose of the device class is to collect data on a clock and put it in circular buffer.</p>
-<p>The <strong>server</strong> code puts entire example on the network using caproto library. The server level has six Process Variables(PVs):  TIME, CPU, MEMORY, BATTERY, dt, LIST
-- TIME - time of last read (UnixTime)
-- CPU - CPU utilization value during last read
-- MEMORY - MEMORY utilization value during last read
-- BATTERY - BATTERY utilization value during last read
-- dt - update frequency in seconds
-- LIST - combined PV that transmits all data acquired during last data acquisition</p>
+<p>The <strong>driver</strong> file contains one Driver class. The instantiation of the class connects to a data acquisition unit(this case on-board sensors). A simple read() function provides higher level command to retrieve data from the sensors. The result is returned as a numpy array, in this case 1x4 with entries sorted as following: time, CPU utilization in %, memory utilization in GB, battery capacity in %.</p>
+<p>The next level in the hierarchy is <strong>device</strong> level. The device code consists of one Device class. The purpose of the device class is to collect data on a clock and put it in a circular buffer which can be accessed later. The initialization of the device instance creates circular buffer where the data from the data acquisition unit will be stored. This example does not take advantage of the circular buffer explicitly, but it can be used to expand the example in future and add more fields like mean CPU usage, etc.</p>
+<p>The <strong>server</strong> code puts entire example on the network using caproto library. The server level data base (record) has six Process Variables(PVs):  TIME, CPU, MEMORY, BATTERY, dt, LIST</p>
+<ul class="simple">
+<li><p>TIME - time of last read (UnixTime)</p></li>
+<li><p>CPU - CPU utilization value during last read</p></li>
+<li><p>MEMORY - MEMORY utilization value during last read</p></li>
+<li><p>BATTERY - BATTERY utilization value during last read</p></li>
+<li><p>dt - update frequency in seconds</p></li>
+<li><p>LIST - combined PV that transmits all data acquired during last data acquisition</p></li>
+</ul>
+<p>During each cycle of data acquisition the record is updated via async queue. The  update of the record triggers subsequent updates in all subscribed clients over the netowkr.</p>
 <p>The <strong>GUI</strong> code uses wxPython in combination with PyEpics. The GUI code is heavily utilizing wxPython BoxSizers to make the code modular and hierarchical.</p>
 <p>The <strong>client</strong> code is a simple example of line based communications. This example can be incorporate into a higher level IOCs that can talk to the lower level IOCs without GUI interface.</p>
 <section id="example-of-usage">
-<h2>Example of usage<a class="headerlink" href="#example-of-usage" title="Permalink to this headline">¶</a></h2>
+<h1>Example of usage<a class="headerlink" href="#example-of-usage" title="Permalink to this headline">¶</a></h1>
 <p>to test the driver code and device code separately.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">caproto_sandbox.simple_daq.driver</span> <span class="kn">import</span> <span class="n">Driver</span>
 <span class="n">driver</span> <span class="o">=</span> <span class="n">Driver</span><span class="p">()</span>
@@ -153,7 +154,7 @@
 </div></blockquote>
 </section>
 <section id="driver">
-<h2>Driver<a class="headerlink" href="#driver" title="Permalink to this headline">¶</a></h2>
+<h1>Driver<a class="headerlink" href="#driver" title="Permalink to this headline">¶</a></h1>
 <p>Simple data acquisition driver example.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="caproto_sandbox.simple_daq.driver.Driver">
@@ -169,7 +170,7 @@
 
 </section>
 <section id="device">
-<h2>Device<a class="headerlink" href="#device" title="Permalink to this headline">¶</a></h2>
+<h1>Device<a class="headerlink" href="#device" title="Permalink to this headline">¶</a></h1>
 <p>Simple data acquisition device example.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="caproto_sandbox.simple_daq.device.Device">
@@ -221,7 +222,7 @@
 
 </section>
 <section id="server-ca-ioc">
-<h2>Server (CA IOC)<a class="headerlink" href="#server-ca-ioc" title="Permalink to this headline">¶</a></h2>
+<h1>Server (CA IOC)<a class="headerlink" href="#server-ca-ioc" title="Permalink to this headline">¶</a></h1>
 <p>Simple data acquisition device example.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="caproto_sandbox.simple_daq.server.Server">
@@ -262,11 +263,11 @@
 
 </section>
 <section id="graphical-user-interface">
-<h2>Graphical User Interface<a class="headerlink" href="#graphical-user-interface" title="Permalink to this headline">¶</a></h2>
+<h1>Graphical User Interface<a class="headerlink" href="#graphical-user-interface" title="Permalink to this headline">¶</a></h1>
 <p>Graphical user interface module written in PyEpics and wxPython</p>
 </section>
 <section id="client">
-<h2>Client<a class="headerlink" href="#client" title="Permalink to this headline">¶</a></h2>
+<h1>Client<a class="headerlink" href="#client" title="Permalink to this headline">¶</a></h1>
 <p>The line base client written in caproto</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="caproto_sandbox.simple_daq.client.Client">
@@ -274,7 +275,6 @@
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 </dd></dl>
 
-</section>
 </section>
 
 
