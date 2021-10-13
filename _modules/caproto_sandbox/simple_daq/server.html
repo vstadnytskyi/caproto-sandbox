@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>caproto_sandbox.simple_daq.server &mdash; caproto sandbox 0.0.0.post64+gb78616f documentation</title>
+  <title>caproto_sandbox.simple_daq.server &mdash; caproto sandbox 0.0.0.post65+g02cf566 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/plot_directive.css" type="text/css" />
@@ -31,7 +31,7 @@
             <a href="../../../index.html" class="icon icon-home"> caproto sandbox
           </a>
               <div class="version">
-                0.0.0.post64+gb78616f
+                0.0.0.post65+g02cf566
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -148,7 +148,22 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">dt</span> <span class="o">=</span> <span class="n">value</span>
         <span class="k">return</span> <span class="n">value</span></div>
 
+<span class="k">def</span> <span class="nf">run_server</span><span class="p">():</span>
+    <span class="kn">from</span>  <span class="nn">caproto_sandbox.simple_daq.driver</span> <span class="kn">import</span> <span class="n">Driver</span>
+    <span class="kn">from</span>  <span class="nn">caproto_sandbox.simple_daq.device</span> <span class="kn">import</span> <span class="n">Device</span>
+    <span class="kn">from</span>  <span class="nn">caproto_sandbox.simple_daq.server</span> <span class="kn">import</span> <span class="n">Server</span>
 
+
+    <span class="n">driver</span> <span class="o">=</span> <span class="n">Driver</span><span class="p">()</span>
+    <span class="n">device</span> <span class="o">=</span> <span class="n">Device</span><span class="p">(</span><span class="n">driver</span> <span class="o">=</span> <span class="n">driver</span><span class="p">)</span>
+    <span class="n">device</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="n">ioc_options</span><span class="p">,</span> <span class="n">run_options</span> <span class="o">=</span> <span class="n">ioc_arg_parser</span><span class="p">(</span>
+        <span class="n">default_prefix</span><span class="o">=</span><span class="s1">&#39;simple_daq:&#39;</span><span class="p">,</span>
+        <span class="n">desc</span><span class="o">=</span><span class="n">dedent</span><span class="p">(</span><span class="n">Server</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">))</span>
+    <span class="n">server</span> <span class="o">=</span> <span class="n">Server</span><span class="p">(</span><span class="o">**</span><span class="n">ioc_options</span><span class="p">)</span>
+    <span class="c1"># pass the device instance into the server instance for bidirectional communication</span>
+    <span class="n">server</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device</span>
+    <span class="n">run</span><span class="p">(</span><span class="n">server</span><span class="o">.</span><span class="n">pvdb</span><span class="p">,</span> <span class="o">**</span><span class="n">run_options</span><span class="p">)</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="kn">from</span>  <span class="nn">caproto_sandbox.simple_daq.driver</span> <span class="kn">import</span> <span class="n">Driver</span>

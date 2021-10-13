@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Example Simple Data Acquisition Unit &mdash; caproto sandbox 0.0.0.post64+gb78616f documentation</title>
+  <title>Example Simple Data Acquisition Unit &mdash; caproto sandbox 0.0.0.post65+g02cf566 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
@@ -34,7 +34,7 @@
             <a href="index.html" class="icon icon-home"> caproto sandbox
           </a>
               <div class="version">
-                0.0.0.post64+gb78616f
+                0.0.0.post65+g02cf566
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -104,25 +104,42 @@
 <p>The <strong>client</strong> code is a simple example of line based communications. This example can be incorporate into a higher level IOCs that can talk to the lower level IOCs without GUI interface.</p>
 <section id="example-of-usage">
 <h2>Example of usage<a class="headerlink" href="#example-of-usage" title="Permalink to this headline">¶</a></h2>
-<p>You would need to open multiple terminal tabs in one window. But first start terminal and change directory to the location of the library.</p>
-<p>to test the driver code:</p>
+<p>to test the driver code and device code separately.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">caproto_sandbox.simple_daq.driver</span> <span class="kn">import</span> <span class="n">Driver</span>
 <span class="n">driver</span> <span class="o">=</span> <span class="n">Driver</span><span class="p">()</span>
 <span class="n">driver</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
 <span class="o">..</span> <span class="n">code</span><span class="o">-</span><span class="n">block</span><span class="p">::</span> <span class="n">python</span>
 
-  <span class="kn">from</span> <span class="nn">caproto_sandbox.simple_daq.device</span> <span class="kn">import</span> <span class="n">Device</span>
-  <span class="n">driver</span> <span class="o">=</span> <span class="n">Driver</span><span class="p">()</span>
-  <span class="n">device</span> <span class="o">=</span> <span class="n">Device</span><span class="p">(</span><span class="n">driver</span> <span class="o">=</span> <span class="n">driver</span><span class="p">)</span>
-  <span class="n">device</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-  <span class="n">device</span><span class="o">.</span><span class="n">buffer</span><span class="o">.</span><span class="n">pointer</span>
+  <span class="o">&gt;</span> <span class="kn">from</span> <span class="nn">caproto_sandbox.simple_daq.device</span> <span class="kn">import</span> <span class="n">Device</span>
+  <span class="o">&gt;</span> <span class="n">driver</span> <span class="o">=</span> <span class="n">Driver</span><span class="p">()</span>
+  <span class="o">&gt;</span> <span class="n">device</span> <span class="o">=</span> <span class="n">Device</span><span class="p">(</span><span class="n">driver</span> <span class="o">=</span> <span class="n">driver</span><span class="p">)</span>
+  <span class="o">&gt;</span> <span class="n">device</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+  <span class="o">&gt;</span> <span class="n">device</span><span class="o">.</span><span class="n">buffer</span><span class="o">.</span><span class="n">pointer</span>
   <span class="o">-</span><span class="mi">1</span>
-  <span class="n">device</span><span class="o">.</span><span class="n">run_once</span><span class="p">()</span>
-  <span class="n">device</span><span class="o">.</span><span class="n">buffer</span><span class="o">.</span><span class="n">pointer</span>
-  <span class="mi">0</span>
 </pre></div>
 </div>
+<p>the circular buffer has no data. Now we can read once and chech the circular buffer.</p>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">device</span><span class="o">.</span><span class="n">run_once</span><span class="p">()</span>
+<span class="o">&gt;</span> <span class="n">device</span><span class="o">.</span><span class="n">buffer</span><span class="o">.</span><span class="n">pointer</span>
+<span class="mi">0</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>You would need to open multiple terminal tabs in one window. But first start terminal and change directory to the location of the library.</p>
+<p>in first terminal tab,</p>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="kn">from</span> <span class="nn">caproto_sandbox.simple_daq.server</span> <span class="kn">import</span> <span class="n">run_server</span>
+<span class="o">&gt;</span> <span class="n">run_server</span><span class="p">()</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>in second terminal tab,</p>
+<blockquote>
+<div><p>&gt; from caproto_sandbox.simple_daq.gui import run_gui
+&gt; run_gui()</p>
+</div></blockquote>
 </section>
 <section id="driver">
 <h2>Driver<a class="headerlink" href="#driver" title="Permalink to this headline">¶</a></h2>
