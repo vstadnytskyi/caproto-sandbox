@@ -69,6 +69,14 @@ In the second terminal tab,
     > from caproto_sandbox.simple_daq.gui import run_gui
     > run_gui()
 
+Below is the example of in-line terminal client.
+
+ .. code-block:: python
+
+    > from caproto_sandbox.simple_daq.client import Client
+    > client = Client()
+    > client.cpu.read().data
+    array([41.4])
 
 
 Driver
