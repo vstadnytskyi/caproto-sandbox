@@ -55,14 +55,16 @@ the circular buffer has no data. Now we can read once and chech the circular buf
 
 You would need to open multiple terminal tabs in one window. But first start terminal and change directory to the location of the library.
 
-in first terminal tab,
+In the first terminal tab,
 
  .. code-block:: python
 
     > from caproto_sandbox.simple_daq.server import run_server
     > run_server()
 
-in second terminal tab,
+In the second terminal tab,
+
+ .. code-block:: python
 
     > from caproto_sandbox.simple_daq.gui import run_gui
     > run_gui()
