@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Example Simple Data Acquisition Unit &mdash; caproto sandbox 0.0.0.post59+g10f4358 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Release History" href="release-history.html" />
+    <link rel="prev" title="Principle of design and operation of CA server" href="usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> caproto sandbox
+          </a>
+              <div class="version">
+                0.0.0.post59+g10f4358
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Principle of design and operation of CA server</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Example Simple Data Acquisition Unit</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#driver">Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#device">Device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#server-ca-ioc">Server (CA IOC)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="release-history.html">Release History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="min_versions.html">Minimum Version of Python and NumPy</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">caproto sandbox</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Example Simple Data Acquisition Unit</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/example_simple_daq.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="example-simple-data-acquisition-unit">
+<h1>Example Simple Data Acquisition Unit<a class="headerlink" href="#example-simple-data-acquisition-unit" title="Permalink to this headline">¶</a></h1>
+<p>This is an example of a simple data acquisition unit. The data comes from onboard sensors like: CPU utilization, battery capacity and memory utilization.</p>
+<p>The example is purposely divided into several different files to explicitly show the modularity of this example. The files are: driver, device, server, gui, and client.</p>
+<p>The <em>driver</em> file contains one Driver class. The instantiation of the class connects to a data acquisition unit and provides a simple read() function to read from sensors. The result is returned as a numpy array, in this case 1x4 with entries sorted as following: time, CPU utilization in %, memory utilization in GB, battery capacity in %.</p>
+<p>The next level in the hierarchy is device level. The device code consists of one Device class. The initialization of the device instance creates circular buffer where the data from the data acquisition unit will be stored. This example does not take advantage of the circular buffer explicitly, but it can be used to expand the example in future and add more fields like mean CPU usage, etc.</p>
+<p>The server code puts entire example on the network using caproto library. The server level has six Process Variables(PVs):  TIME, CPU, MEMORY, BATTERY, dt, LIST
+- TIME - time of last read (UnixTime)
+- CPU - CPU utilization value during last read
+- MEMORY - MEMORY utilization value during last read
+- BATTERY - BATTERY utilization value during last read
+- dt - update frequency in seconds
+- LIST - combined PV that transmits all data acquired during last data acquisition</p>
+<section id="driver">
+<h2>Driver<a class="headerlink" href="#driver" title="Permalink to this headline">¶</a></h2>
+<p>Simple data acquisition driver example.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="caproto_sandbox.simple_daq.driver.Driver">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">caproto_sandbox.simple_daq.driver.</span></span><span class="sig-name descname"><span class="pre">Driver</span></span><a class="reference internal" href="_modules/caproto_sandbox/simple_daq/driver.html#Driver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#caproto_sandbox.simple_daq.driver.Driver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="caproto_sandbox.simple_daq.driver.Driver.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/caproto_sandbox/simple_daq/driver.html#Driver.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#caproto_sandbox.simple_daq.driver.Driver.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>reads onboard sensors and returns an array with a time-stamp.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="device">
+<h2>Device<a class="headerlink" href="#device" title="Permalink to this headline">¶</a></h2>
+<p>Simple data acquisition device example.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="caproto_sandbox.simple_daq.device.Device">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">caproto_sandbox.simple_daq.device.</span></span><span class="sig-name descname"><span class="pre">Device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/caproto_sandbox/simple_daq/device.html#Device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#caproto_sandbox.simple_daq.device.Device" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="caproto_sandbox.simple_daq.device.Device.get_dt">
+<span class="sig-name descname"><span class="pre">get_dt</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/caproto_sandbox/simple_daq/device.html#Device.get_dt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#caproto_sandbox.simple_daq.device.Device.get_dt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="caproto_sandbox.simple_daq.device.Device.io_push">
+<span class="sig-name descname"><span class="pre">io_push</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">io_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/caproto_sandbox/simple_daq/device.html#Device.io_push"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#caproto_sandbox.simple_daq.device.Device.io_push" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="caproto_sandbox.simple_daq.device.Device.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/caproto_sandbox/simple_daq/device.html#Device.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#caproto_sandbox.simple_daq.device.Device.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="caproto_sandbox.simple_daq.device.Device.run_once">
+<span class="sig-name descname"><span class="pre">run_once</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/caproto_sandbox/simple_daq/device.html#Device.run_once"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#caproto_sandbox.simple_daq.device.Device.run_once" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="caproto_sandbox.simple_daq.device.Device.set_dt">
+<span class="sig-name descname"><span class="pre">set_dt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/caproto_sandbox/simple_daq/device.html#Device.set_dt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#caproto_sandbox.simple_daq.device.Device.set_dt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="caproto_sandbox.simple_daq.device.Device.start">
+<span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/caproto_sandbox/simple_daq/device.html#Device.start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#caproto_sandbox.simple_daq.device.Device.start" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="caproto_sandbox.simple_daq.device.Device.stop">
+<span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/caproto_sandbox/simple_daq/device.html#Device.stop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#caproto_sandbox.simple_daq.device.Device.stop" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="server-ca-ioc">
+<h2>Server (CA IOC)<a class="headerlink" href="#server-ca-ioc" title="Permalink to this headline">¶</a></h2>
+<p>Simple data acquisition device example.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="caproto_sandbox.simple_daq.server.Server">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">caproto_sandbox.simple_daq.server.</span></span><span class="sig-name descname"><span class="pre">Server</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prefix</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">macros</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/caproto_sandbox/simple_daq/server.html#Server"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#caproto_sandbox.simple_daq.server.Server" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">caproto.server.server.PVGroup</span></code></p>
+<p>An IOC with three uncoupled read/writable PVs</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="caproto_sandbox.simple_daq.server.Server.BATTERY">
+<span class="sig-name descname"><span class="pre">BATTERY</span></span><a class="headerlink" href="#caproto_sandbox.simple_daq.server.Server.BATTERY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="caproto_sandbox.simple_daq.server.Server.CPU">
+<span class="sig-name descname"><span class="pre">CPU</span></span><a class="headerlink" href="#caproto_sandbox.simple_daq.server.Server.CPU" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="caproto_sandbox.simple_daq.server.Server.LIST">
+<span class="sig-name descname"><span class="pre">LIST</span></span><a class="headerlink" href="#caproto_sandbox.simple_daq.server.Server.LIST" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="caproto_sandbox.simple_daq.server.Server.MEMORY">
+<span class="sig-name descname"><span class="pre">MEMORY</span></span><a class="headerlink" href="#caproto_sandbox.simple_daq.server.Server.MEMORY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="caproto_sandbox.simple_daq.server.Server.TIME">
+<span class="sig-name descname"><span class="pre">TIME</span></span><a class="headerlink" href="#caproto_sandbox.simple_daq.server.Server.TIME" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="caproto_sandbox.simple_daq.server.Server.dt">
+<span class="sig-name descname"><span class="pre">dt</span></span><a class="headerlink" href="#caproto_sandbox.simple_daq.server.Server.dt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="usage.html" class="btn btn-neutral float-left" title="Principle of design and operation of CA server" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="release-history.html" class="btn btn-neutral float-right" title="Release History" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019, Valentyn Stadnytskyi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
