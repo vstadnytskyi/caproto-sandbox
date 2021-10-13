@@ -3,3 +3,4 @@ psutil
 caproto
 numpy
 pyepics
+circular_buffer_numpy
