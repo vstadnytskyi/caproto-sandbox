@@ -37,8 +37,6 @@ class Server(PVGroup):
 
     dt = pvproperty(value=1.0, precision = 3, units = 's')
 
-    LIST = pvproperty(value=[0.0,0.0,0.0,0.0])
-
     @CPU.startup
     async def CPU(self, instance, async_lib):
         """
