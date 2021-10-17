@@ -19,9 +19,13 @@ class Driver(object):
         """
         import psutil
         from time import time
+        import numpy as np
         memory = psutil.virtual_memory().used
         cpu = psutil.cpu_percent()
-        battery = psutil.sensors_battery().percent
+        if psutil.sensors_battery() is not None:
+            battery = psutil.sensors_battery().percent
+        else:
+            battery = np.nan
         arr = self.arr
         arr[0,0] = time()
         arr[0,1] = cpu
