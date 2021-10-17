@@ -13,7 +13,7 @@ The **driver** file contains one Driver class. The instantiation of the class co
 
 The next level in the hierarchy is **device** level. The device code consists of one Device class. The purpose of the device class is to collect data on a clock and put it in a circular buffer which can be accessed later. The initialization of the device instance creates circular buffer where the data from the data acquisition unit will be stored. This example does not take advantage of the circular buffer explicitly, but it can be used to expand the example in future and add more fields like mean CPU usage, etc.
 
-The **server** code puts entire example on the network using caproto library. The server level data base (record) has six Process Variables(PVs):  TIME, CPU, MEMORY, BATTERY, dt, LIST
+The **server** code puts entire example on the network using caproto library. The server level data base (record) has six Process Variables(PVs):  TIME, CPU, MEMORY, BATTERY, dt.
 
 - TIME - time of last read (UnixTime)
 
@@ -25,7 +25,6 @@ The **server** code puts entire example on the network using caproto library. Th
 
 - dt - update frequency in seconds
 
-- LIST - combined PV that transmits all data acquired during last data acquisition
 
 During each cycle of data acquisition the record is updated via async queue. The  update of the record triggers subsequent updates in all subscribed clients over the netowkr.
 

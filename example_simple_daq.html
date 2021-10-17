@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Example Simple Data Acquisition Unit &mdash; caproto sandbox 0.0.0.post74+gd9ad9ee documentation</title>
+  <title>Example Simple Data Acquisition Unit &mdash; caproto sandbox 0.0.0.post75+g712d44a documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
@@ -34,7 +34,7 @@
             <a href="index.html" class="icon icon-home"> caproto sandbox
           </a>
               <div class="version">
-                0.0.0.post74+gd9ad9ee
+                0.0.0.post75+g712d44a
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -93,14 +93,13 @@
 </figure>
 <p>The <strong>driver</strong> file contains one Driver class. The instantiation of the class connects to a data acquisition unit(this case on-board sensors). A simple read() function provides higher level command to retrieve data from the sensors. The result is returned as a numpy array, in this case 1x4 with entries sorted as following: time, CPU utilization in %, memory utilization in GB, battery capacity in %.</p>
 <p>The next level in the hierarchy is <strong>device</strong> level. The device code consists of one Device class. The purpose of the device class is to collect data on a clock and put it in a circular buffer which can be accessed later. The initialization of the device instance creates circular buffer where the data from the data acquisition unit will be stored. This example does not take advantage of the circular buffer explicitly, but it can be used to expand the example in future and add more fields like mean CPU usage, etc.</p>
-<p>The <strong>server</strong> code puts entire example on the network using caproto library. The server level data base (record) has six Process Variables(PVs):  TIME, CPU, MEMORY, BATTERY, dt, LIST</p>
+<p>The <strong>server</strong> code puts entire example on the network using caproto library. The server level data base (record) has six Process Variables(PVs):  TIME, CPU, MEMORY, BATTERY, dt.</p>
 <ul class="simple">
 <li><p>TIME - time of last read (UnixTime)</p></li>
 <li><p>CPU - CPU utilization value during last read</p></li>
 <li><p>MEMORY - MEMORY utilization value during last read</p></li>
 <li><p>BATTERY - BATTERY utilization value during last read</p></li>
 <li><p>dt - update frequency in seconds</p></li>
-<li><p>LIST - combined PV that transmits all data acquired during last data acquisition</p></li>
 </ul>
 <p>During each cycle of data acquisition the record is updated via async queue. The  update of the record triggers subsequent updates in all subscribed clients over the netowkr.</p>
 <p>The <strong>GUI</strong> code uses wxPython in combination with PyEpics. The GUI code is heavily utilizing wxPython BoxSizers to make the code modular and hierarchical.</p>
@@ -239,11 +238,6 @@
 <dl class="py attribute">
 <dt class="sig sig-object py" id="caproto_sandbox.simple_daq.server.Server.CPU">
 <span class="sig-name descname"><span class="pre">CPU</span></span><a class="headerlink" href="#caproto_sandbox.simple_daq.server.Server.CPU" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="caproto_sandbox.simple_daq.server.Server.LIST">
-<span class="sig-name descname"><span class="pre">LIST</span></span><a class="headerlink" href="#caproto_sandbox.simple_daq.server.Server.LIST" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
