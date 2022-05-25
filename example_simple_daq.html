@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Example Simple Data Acquisition Unit &mdash; caproto sandbox 0.0.0.post77+g12e4188 documentation</title>
+  <title>Example Simple Data Acquisition Unit &mdash; caproto sandbox 0.0.0.post78+g6be23b6 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
@@ -34,7 +34,7 @@
             <a href="index.html" class="icon icon-home"> caproto sandbox
           </a>
               <div class="version">
-                0.0.0.post77+g12e4188
+                0.0.0.post78+g6be23b6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -271,6 +271,28 @@
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 </dd></dl>
 
+<p>Unfortunately, On Friday April 29th 2022, developers of caproto announced that they are no longer available to maintaine the library and are looking for developers and maintainers.</p>
+<p>There are four mentioned alternatives to the caproto library:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>pyDevSup <a class="reference external" href="https://github.com/mdavidsaver/pyDevSup">https://github.com/mdavidsaver/pyDevSup</a></p></li>
+<li><p>PyDevice <a class="reference external" href="https://github.com/klemenv/PyDevice">https://github.com/klemenv/PyDevice</a></p></li>
+<li><p>pcaspy <a class="reference external" href="https://github.com/paulscherrerinstitute/pcaspy">https://github.com/paulscherrerinstitute/pcaspy</a></p></li>
+<li><p>p4p (PVAccess) <a class="reference external" href="https://github.com/mdavidsaver/p4p">https://github.com/mdavidsaver/p4p</a></p></li>
+</ul>
+</div></blockquote>
+<p>I have decided to check all four libraries and to make it more fun I will recreate my simple_daq caproto server with each library. My modular and hierarchical design should require me to rewrite only CA server and keep the rest of the code intact</p>
+<p># PyDevice</p>
+<p>It seems that PyDevice relies on EPICS base to be installed on the computer before it can be used.</p>
+<p>from <a class="reference external" href="https://github.com/klemenv/PyDevice/issues/14">https://github.com/klemenv/PyDevice/issues/14</a>
+&gt; these are the rough steps to get the demo IOC running from beginning:
+&gt;
+&gt; * download and compile EPICS base from <a class="reference external" href="https://epics.anl.gov/download/base/index.php">https://epics.anl.gov/download/base/index.php</a>
+&gt; * download PyDevice from this repo, ideally using one of the tagged versions like <a class="reference external" href="https://github.com/klemenv/PyDevice/releases/tag/R1.1.1">https://github.com/klemenv/PyDevice/releases/tag/R1.1.1</a>
+&gt; * point PyDevice to your EPICS base folder by creating configure/RELEASE.local file with a single line, ie. <cite>echo EPICS_BASE=/ics/epics/7.0.6.1/base &gt; configure/RELEASE.local</cite>
+&gt; * compile PyDevice with <cite>make</cite>
+&gt; * <cite>cd iocBoot/iocpydev/</cite>
+&gt; * start the IOC with <cite>./st.cmd</cite></p>
 </section>
 </section>
 
