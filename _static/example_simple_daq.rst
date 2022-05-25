@@ -141,18 +141,21 @@ There are four mentioned alternatives to the caproto library:
 I have decided to check all four libraries and to make it more fun I will recreate my simple_daq caproto server with each library. My modular and hierarchical design should require me to rewrite only CA server and keep the rest of the code intact
 
   
-# PyDevice 
-
+PyDevice 
+==================
 It seems that PyDevice relies on EPICS base to be installed on the computer before it can be used.
 
 from https://github.com/klemenv/PyDevice/issues/14 
-> these are the rough steps to get the demo IOC running from beginning:
-> 
-> * download and compile EPICS base from https://epics.anl.gov/download/base/index.php
-> * download PyDevice from this repo, ideally using one of the tagged versions like https://github.com/klemenv/PyDevice/releases/tag/R1.1.1
-> * point PyDevice to your EPICS base folder by creating configure/RELEASE.local file with a single line, ie. `echo EPICS_BASE=/ics/epics/7.0.6.1/base > configure/RELEASE.local`
-> * compile PyDevice with `make`
-> * `cd iocBoot/iocpydev/`
-> * start the IOC with `./st.cmd`
+
+.. code-block:: shell
+  
+  > these are the rough steps to get the demo IOC running from beginning:
+  > 
+  > * download and compile EPICS base from https://epics.anl.gov/download/base/index.php
+  > * download PyDevice from this repo, ideally using one of the tagged versions like https://github.com/klemenv/PyDevice/releases/tag/R1.1.1
+  > * point PyDevice to your EPICS base folder by creating configure/RELEASE.local file with a single line, ie. `echo EPICS_BASE=/ics/epics/7.0.6.1/base > configure/RELEASE.local`
+  > * compile PyDevice with `make`
+  > * `cd iocBoot/iocpydev/`
+  > * start the IOC with `./st.cmd`
 
 

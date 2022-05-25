@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Example Simple Data Acquisition Unit &mdash; caproto sandbox 0.0.0.post78+g6be23b6 documentation</title>
+  <title>Example Simple Data Acquisition Unit &mdash; caproto sandbox 0.0.0.post79+gc5c130b documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
@@ -34,7 +34,7 @@
             <a href="index.html" class="icon icon-home"> caproto sandbox
           </a>
               <div class="version">
-                0.0.0.post78+g6be23b6
+                0.0.0.post79+gc5c130b
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -54,6 +54,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#server-ca-ioc">Server (CA IOC)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#graphical-user-interface">Graphical User Interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#client">Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pydevice">PyDevice</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="release-history.html">Release History</a></li>
@@ -282,17 +283,21 @@
 </ul>
 </div></blockquote>
 <p>I have decided to check all four libraries and to make it more fun I will recreate my simple_daq caproto server with each library. My modular and hierarchical design should require me to rewrite only CA server and keep the rest of the code intact</p>
-<p># PyDevice</p>
+</section>
+<section id="pydevice">
+<h2>PyDevice<a class="headerlink" href="#pydevice" title="Permalink to this headline">¶</a></h2>
 <p>It seems that PyDevice relies on EPICS base to be installed on the computer before it can be used.</p>
-<p>from <a class="reference external" href="https://github.com/klemenv/PyDevice/issues/14">https://github.com/klemenv/PyDevice/issues/14</a>
-&gt; these are the rough steps to get the demo IOC running from beginning:
+<p>from <a class="reference external" href="https://github.com/klemenv/PyDevice/issues/14">https://github.com/klemenv/PyDevice/issues/14</a></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>&gt; these are the rough steps to get the demo IOC running from beginning:
 &gt;
-&gt; * download and compile EPICS base from <a class="reference external" href="https://epics.anl.gov/download/base/index.php">https://epics.anl.gov/download/base/index.php</a>
-&gt; * download PyDevice from this repo, ideally using one of the tagged versions like <a class="reference external" href="https://github.com/klemenv/PyDevice/releases/tag/R1.1.1">https://github.com/klemenv/PyDevice/releases/tag/R1.1.1</a>
-&gt; * point PyDevice to your EPICS base folder by creating configure/RELEASE.local file with a single line, ie. <cite>echo EPICS_BASE=/ics/epics/7.0.6.1/base &gt; configure/RELEASE.local</cite>
-&gt; * compile PyDevice with <cite>make</cite>
-&gt; * <cite>cd iocBoot/iocpydev/</cite>
-&gt; * start the IOC with <cite>./st.cmd</cite></p>
+&gt; * download and compile EPICS base from https://epics.anl.gov/download/base/index.php
+&gt; * download PyDevice from this repo, ideally using one of the tagged versions like https://github.com/klemenv/PyDevice/releases/tag/R1.1.1
+&gt; * point PyDevice to your EPICS base folder by creating configure/RELEASE.local file with a single line, ie. <span class="sb">`</span><span class="nb">echo</span> <span class="nv">EPICS_BASE</span><span class="o">=</span>/ics/epics/7.0.6.1/base &gt; configure/RELEASE.local<span class="sb">`</span>
+&gt; * compile PyDevice with <span class="sb">`</span>make<span class="sb">`</span>
+&gt; * <span class="sb">`</span><span class="nb">cd</span> iocBoot/iocpydev/<span class="sb">`</span>
+&gt; * start the IOC with <span class="sb">`</span>./st.cmd<span class="sb">`</span>
+</pre></div>
+</div>
 </section>
 </section>
 
