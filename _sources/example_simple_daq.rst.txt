@@ -159,3 +159,13 @@ from https://github.com/klemenv/PyDevice/issues/14
   > * start the IOC with `./st.cmd`
 
 
+pyDevSup 
+==================
+
+This library seem to heavily rely on EPICS base as well.
+
+
+pcaspy
+=================
+
+Great library which can be used to create simple CA servers. I do have issues with creating a simple CA server after I had success. I am going to reboor the computer to see if I can get it work. It seems lacing documentation and there is not much tools available to debug. 
