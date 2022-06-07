@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>caproto_sandbox.simple_daq.driver &mdash; caproto sandbox 0.0.0.post81+g5aa669e documentation</title>
+  <title>caproto_sandbox.simple_daq.driver &mdash; caproto sandbox 0.0.0.post83+g4c295c1 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/plot_directive.css" type="text/css" />
@@ -31,7 +31,7 @@
             <a href="../../../index.html" class="icon icon-home"> caproto sandbox
           </a>
               <div class="version">
-                0.0.0.post81+g5aa669e
+                0.0.0.post83+g4c295c1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -96,19 +96,33 @@
         <span class="kn">import</span> <span class="nn">psutil</span>
         <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
         <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-        <span class="n">memory</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">virtual_memory</span><span class="p">()</span><span class="o">.</span><span class="n">used</span>
-        <span class="n">cpu</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">cpu_percent</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">psutil</span><span class="o">.</span><span class="n">sensors_battery</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">battery</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">sensors_battery</span><span class="p">()</span><span class="o">.</span><span class="n">percent</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">battery</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">memory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_virtual_memory</span><span class="p">()</span>
+        <span class="n">cpu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_CPU</span><span class="p">()</span>
+        <span class="n">battery</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_battery</span><span class="p">()</span>
         <span class="n">arr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arr</span>
         <span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
         <span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">cpu</span>
         <span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">memory</span>
         <span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">battery</span>
-        <span class="k">return</span> <span class="n">arr</span></div></div>
-
+        <span class="k">return</span> <span class="n">arr</span></div>
+    
+<div class="viewcode-block" id="Driver.get_CPU"><a class="viewcode-back" href="../../../example_simple_daq.html#caproto_sandbox.simple_daq.driver.Driver.get_CPU">[docs]</a>    <span class="k">def</span> <span class="nf">get_CPU</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">psutil</span>
+        <span class="n">cpu</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">cpu_percent</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">cpu</span></div>
+    
+<div class="viewcode-block" id="Driver.get_virtual_memory"><a class="viewcode-back" href="../../../example_simple_daq.html#caproto_sandbox.simple_daq.driver.Driver.get_virtual_memory">[docs]</a>    <span class="k">def</span> <span class="nf">get_virtual_memory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">psutil</span>
+        <span class="n">memory</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">virtual_memory</span><span class="p">()</span><span class="o">.</span><span class="n">used</span>
+        <span class="k">return</span> <span class="n">memory</span></div>
+    
+<div class="viewcode-block" id="Driver.get_battery"><a class="viewcode-back" href="../../../example_simple_daq.html#caproto_sandbox.simple_daq.driver.Driver.get_battery">[docs]</a>    <span class="k">def</span> <span class="nf">get_battery</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">psutil</span>
+        <span class="k">if</span> <span class="n">psutil</span><span class="o">.</span><span class="n">sensors_battery</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">battery</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">sensors_battery</span><span class="p">()</span><span class="o">.</span><span class="n">percent</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">battery</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="k">return</span> <span class="n">battery</span></div></div>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">driver</span> <span class="o">=</span> <span class="n">Driver</span><span class="p">()</span>
