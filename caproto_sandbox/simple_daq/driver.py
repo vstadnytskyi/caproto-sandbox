@@ -20,19 +20,33 @@ class Driver(object):
         import psutil
         from time import time
         import numpy as np
-        memory = psutil.virtual_memory().used
-        cpu = psutil.cpu_percent()
-        if psutil.sensors_battery() is not None:
-            battery = psutil.sensors_battery().percent
-        else:
-            battery = np.nan
+        memory = self.set_virtual_memory()
+        cpu = self.get_CPU()
+        battery = self.get_battery()
         arr = self.arr
         arr[0,0] = time()
         arr[0,1] = cpu
         arr[0,2] = memory
         arr[0,3] = battery
         return arr
-
+    
+    def get_CPU(self):
+        import psutil
+        cpu = psutil.cpu_percent()
+        return cpu
+    
+    def get_virtual_memory(self):
+        import psutil
+        memory = psutil.virtual_memory().used
+        return memory
+    
+    def get_battery(self):
+        import psutil
+        if psutil.sensors_battery() is not None:
+            battery = psutil.sensors_battery().percent
+        else:
+            battery = np.nan
+        return battery
 
 if __name__ == '__main__':
     driver = Driver()
