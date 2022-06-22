@@ -15,35 +15,16 @@
 
 from pcaspy import SimpleServer, Driver
 import random
+from numpy import nan, zeros, int16, random
+width = 15 #1920 #int(1920/2)
+height = 15 #1080#int(1080/2)
 
-prefix = 'simple_daq:'
+prefix = 'BITMAP_IMAGE:'
 pvdb = {
-    'CPU' : {
-        'value': 0.0,
+    'image' : {
         'prec' : 1,
-        'scan' : .1,
-        'count': 1,
-        'unit': '%'
+        'count': width*height*3,
     },
-    'MEMORY' : {
-        'value': 0.0,
-        'prec' : 1,
-        'scan' : .1,
-        'count': 1,
-        'unit': 'GB'
-    },
-    'BATTERY' : {
-        'value': 0.0,
-        'prec' : 1,
-        'scan' : .1,
-        'count': 1,
-        'unit': '%'
-       },
-    'TIME' : {
-        'type' : 'str',
-        'value': 'time',
-        'scan' : .1,
-            },
     'dt' : {
         'value': 1.0,
         'prec' : 1,
@@ -57,20 +38,35 @@ pvdb = {
 class myDriver(Driver):
     def __init__(self):
         super(myDriver, self).__init__()
+        self.width = width
+        self.height = height
         from time import time
         self.t_start = time()
         import threading
         threading.Thread(target=self.poll, daemon=True).start()
+
     def poll(self):
         from time import ctime, time, sleep
         import psutil
+        width = self.width
+        height = self.height
+        pos_w = 0
+        pos_h = 0
+        self.new_arr = zeros((height,width,3), dtype='int16')
         while True:
-            self.setParam('TIME', ctime(time()))
-            self.setParam('CPU', psutil.cpu_percent())
-            if psutil.sensors_battery() is not None:
-                self.setParam('BATTERY', psutil.sensors_battery().percent)
-            self.setParam('MEMORY', psutil.virtual_memory().used / (1024**3))
 
+            self.new_arr = self.new_arr*0
+            self.new_arr[:,pos_w,:] = 255
+            self.new_arr[pos_h,:,:] = 255
+            if pos_w == (width-1):
+                pos_w = 0
+            else:
+                pos_w += 1
+            if pos_h == (height-1):
+                pos_h = 0
+            else:
+                pos_h += 1
+            self.setParam('image', self.new_arr.flatten())
             self.updatePVs()
 
             sleep(self.getParam('dt'))

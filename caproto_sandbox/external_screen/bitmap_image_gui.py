@@ -53,7 +53,7 @@ class PanelTemplate(wx.Frame):
 
             self.sizers['image'] = wx.BoxSizer(wx.VERTICAL)
             self.labels['image']  = wx.StaticText(self.panel, label= 'Microscope Camera', style = wx.ALIGN_CENTER)
-            self.fields['image']  = PVImage(self.panel, pv='BITMAP_IMAGE:image', im_size = (100,100))
+            self.fields['image']  = PVImage(self.panel, pv='BITMAP_IMAGE:image', im_size = (15,15))
             self.sizers['image'] .Add(self.labels['image']  , 0)
             self.sizers['image'] .Add(self.fields['image']  , 0)
 
