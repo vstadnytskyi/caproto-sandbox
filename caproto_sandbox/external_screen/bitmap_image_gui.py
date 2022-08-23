@@ -9,7 +9,15 @@ from pdb import pm
 
 from icarus_nmr.pyepics import PVImage
 
+import os
+os.environ["EPICS_CA_MAX_ARRAY_BYTES"] = str(4000*4000*3*10)
+
 __version__ = "0.0.0" #initial
+
+WIDTH = 2736
+HEIGHT = 2192
+
+PREFIX = 'AR_SETUP_FLIR:'
 
 class PanelTemplate(wx.Frame):
 
@@ -47,13 +55,13 @@ class PanelTemplate(wx.Frame):
             image_sizer = wx.StaticBoxSizer(orient = wx.VERTICAL, parent = self.panel, label = 'Microscope Camera')
             self.sizers['dt'] = wx.BoxSizer(wx.HORIZONTAL)
             self.labels['dt']  = wx.StaticText(self.panel, label= 'dt', style = wx.ALIGN_CENTER)
-            self.fields['dt']  = epics.wx.PVText(self.panel, pv='BITMAP_IMAGE:dt',minor_alarm = wx.Colour(5, 6, 7),auto_units = True)
+            self.fields['dt']  = epics.wx.PVText(self.panel, pv=f'{PREFIX}dt',minor_alarm = wx.Colour(5, 6, 7),auto_units = True)
             self.sizers['dt'] .Add(self.labels['dt']  , 0)
             self.sizers['dt'] .Add(self.fields['dt']  , 0)
 
             self.sizers['image'] = wx.BoxSizer(wx.VERTICAL)
             self.labels['image']  = wx.StaticText(self.panel, label= 'Microscope Camera', style = wx.ALIGN_CENTER)
-            self.fields['image']  = PVImage(self.panel, pv='BITMAP_IMAGE:image', im_size = (15,15))
+            self.fields['image']  = PVImage(self.panel, pv=f'{PREFIX}image', im_size = (WIDTH, HEIGHT))
             self.sizers['image'] .Add(self.labels['image']  , 0)
             self.sizers['image'] .Add(self.fields['image']  , 0)
 

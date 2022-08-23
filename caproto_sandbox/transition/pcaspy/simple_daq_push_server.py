@@ -75,23 +75,23 @@ class myDriver(Driver):
 
             sleep(self.getParam('dt'))
 
-    # def read(self, reason):
-    #     from time import ctime, time
-    #     import psutil
-    #     if reason == 'TIME':
-    #         value = time()-self.t_start
-    #     elif reason == 'CPU':
-    #         value = psutil.cpu_percent()
-    #     elif reason == 'BATTERY':
-    #         if psutil.sensors_battery() is not None:
-    #             value = psutil.sensors_battery().percent
-    #         else:
-    #             value = np.nan
-    #     elif reason == 'MEMORY':
-    #         value = psutil.virtual_memory().used / (1024**3)
-    #     else:
-    #         value = self.getParam(reason)
-    #     return value
+    def read(self, reason):
+        from time import ctime, time
+        import psutil
+        if reason == 'TIME':
+            value = time()-self.t_start
+        elif reason == 'CPU':
+            value = psutil.cpu_percent()
+        elif reason == 'BATTERY':
+            if psutil.sensors_battery() is not None:
+                value = psutil.sensors_battery().percent
+            else:
+                value = np.nan
+        elif reason == 'MEMORY':
+            value = psutil.virtual_memory().used / (1024**3)
+        else:
+            value = self.getParam(reason)
+        return value
 
     def write(self, reason, value):
         from time import ctime, time

@@ -12,23 +12,25 @@
 
 
 """
+import os
+os.environ["EPICS_CA_MAX_ARRAY_BYTES"] = str(4000*4000*3*10)
 
 from pcaspy import SimpleServer, Driver
 import random
 from numpy import nan, zeros, int16, random
-width = 15 #1920 #int(1920/2)
-height = 15 #1080#int(1080/2)
-
+WIDTH = 2736
+HEIGHT = 2192
+print(f'width = {WIDTH}, height = {HEIGHT}')
+print('simple push server')
 prefix = 'BITMAP_IMAGE:'
 pvdb = {
     'image' : {
-        'prec' : 1,
-        'count': width*height*3,
+        'prec' : 0,
+        'count': WIDTH*HEIGHT*3,
     },
     'dt' : {
         'value': 1.0,
         'prec' : 1,
-        'scan' : .1,
         'count': 1,
         'unit': 's' 
     },
@@ -38,8 +40,8 @@ pvdb = {
 class myDriver(Driver):
     def __init__(self):
         super(myDriver, self).__init__()
-        self.width = width
-        self.height = height
+        self.width = WIDTH
+        self.height = HEIGHT
         from time import time
         self.t_start = time()
         import threading
@@ -52,48 +54,26 @@ class myDriver(Driver):
         height = self.height
         pos_w = 0
         pos_h = 0
-        self.new_arr = zeros((height,width,3), dtype='int16')
-        while True:
+        self.new_arr = zeros((height,width,3), dtype='uint8')
 
-            self.new_arr = self.new_arr*0
-            self.new_arr[:,pos_w,:] = 255
-            self.new_arr[pos_h,:,:] = 255
-            if pos_w == (width-1):
-                pos_w = 0
-            else:
-                pos_w += 1
-            if pos_h == (height-1):
-                pos_h = 0
-            else:
-                pos_h += 1
-            self.setParam('image', self.new_arr.flatten())
-            self.updatePVs()
-
-            sleep(self.getParam('dt'))
-
-    # def read(self, reason):
-    #     from time import ctime, time
-    #     import psutil
-    #     if reason == 'TIME':
-    #         value = time()-self.t_start
-    #     elif reason == 'CPU':
-    #         value = psutil.cpu_percent()
-    #     elif reason == 'BATTERY':
-    #         if psutil.sensors_battery() is not None:
-    #             value = psutil.sensors_battery().percent
-    #         else:
-    #             value = np.nan
-    #     elif reason == 'MEMORY':
-    #         value = psutil.virtual_memory().used / (1024**3)
-    #     else:
-    #         value = self.getParam(reason)
-    #     return value
+    def read(self, reason):
+        from time import ctime, time
+        import psutil
+        print('read',reason, time())
+        if reason == 'image': 
+            value = self.getParam('image')
+        elif reason == 'dt':
+            value = self.getParam('dt')
+        
+        return value
 
     def write(self, reason, value):
         from time import ctime, time
         import psutil
+        import numpy as np
         if reason == 'dt':
-            print(f"dt was written and new dt is {value}")
+            self.setParam(reason,value)
+        elif reason == 'image':
             self.setParam(reason,value)
 
 if __name__ == '__main__':
@@ -102,4 +82,4 @@ if __name__ == '__main__':
     server.createPV(prefix, pvdb)
     driver = myDriver()
     while True:
-        server.process(0.1)
+        server.process(.1)
