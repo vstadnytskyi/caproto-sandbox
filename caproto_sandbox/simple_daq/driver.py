@@ -20,7 +20,7 @@ class Driver(object):
         import psutil
         from time import time
         import numpy as np
-        memory = self.set_virtual_memory()
+        memory = self.get_virtual_memory()
         cpu = self.get_CPU()
         battery = self.get_battery()
         arr = self.arr
