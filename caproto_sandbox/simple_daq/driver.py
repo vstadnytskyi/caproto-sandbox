@@ -32,16 +32,19 @@ class Driver(object):
     
     def get_CPU(self):
         import psutil
+        import numpy as np
         cpu = psutil.cpu_percent()
         return cpu
     
     def get_virtual_memory(self):
         import psutil
+        import numpy as np
         memory = psutil.virtual_memory().used
         return memory
     
     def get_battery(self):
         import psutil
+        import numpy as np
         if psutil.sensors_battery() is not None:
             battery = psutil.sensors_battery().percent
         else:
